@@ -4,7 +4,7 @@
       <div class="carousel-inner border-radius-lg h-100">
         <div
           class="carousel-item h-100 active"
-          :style="{backgroundImage: 'url(' + require('@/assets/img/carousel-1.jpg') + ')',
+          :style="{backgroundImage: `url(${img})`,
       backgroundSize: 'cover'}"
         >
           <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
@@ -17,7 +17,7 @@
         </div>
         <div
           class="carousel-item h-100"
-          :style="{backgroundImage: 'url(' + require('@/assets/img/carousel-2.jpg') + ')',
+          :style="{backgroundImage: `url(${img})`,
       backgroundSize: 'cover'}"
         >
           <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
@@ -30,7 +30,7 @@
         </div>
         <div
           class="carousel-item h-100"
-          :style="{backgroundImage: 'url(' + require('@/assets/img/carousel-3.jpg') + ')',
+          :style="{backgroundImage: `url(${img})`,
       backgroundSize: 'cover'}"
         >
           <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
@@ -65,7 +65,14 @@
 </template>
 
 <script>
+import img from "../../assets/img/carousel-1.jpg";
+import img1 from "../../assets/img/logos/mastercard.png";
 export default {
   name: "carousel",
+    data() {
+        return {
+            img,
+        };
+    },
 };
 </script>

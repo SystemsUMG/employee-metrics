@@ -10,7 +10,7 @@
     </div>
     <div class="p-3 card-body">
       <div class="chart">
-        <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+        <canvas ref="chart-line" class="chart-canvas" height="300"></canvas>
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@ export default {
   },
 
   mounted() {
-    var ctx1 = document.getElementById("chart-line").getContext("2d");
+    var ctx1 =  this.$refs["chart-line"].getContext("2d")//document.getElementById("chart-line").getContext("2d");
 
     var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
 

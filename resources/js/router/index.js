@@ -54,11 +54,11 @@ const routes = [
     name: "Signup",
     component: Signup,
   },
-  
+
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.APP_URL),
   routes,
   linkActiveClass: "active",
 });
