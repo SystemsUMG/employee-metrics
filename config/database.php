@@ -83,7 +83,7 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => env('DB_SRV_HOST', 'localhost'),
             'port' => env('DB_SRV_PORT', '1433'),
-            'database' => env('DB_SRV_DATABASE', 'forge'),
+            'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_SRV_USERNAME', 'forge'),
             'password' => env('DB_SRV_PASSWORD', ''),
             'charset' => 'utf8',
