@@ -8,7 +8,7 @@ export default createStore({
     sidebarType: "bg-white",
     isRTL: false,
     mcolor: "",
-    darkMode: false,
+    darkMode: true,
     isNavFixed: false,
     isAbsolute: false,
     showNavs: true,
