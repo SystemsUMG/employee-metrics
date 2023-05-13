@@ -50,7 +50,7 @@ export default {
             //Header para DB
             localStorage.setItem('database', database);
             axios.defaults.headers.common['Database'] = database
-            this.$router.push('/survey')
+            this.$router.push({ name: 'survey' })
         }
     }
 };

@@ -16,7 +16,7 @@ class KpiController extends ResponseController
      */
     public function index()
     {
-        $kpiModel =  Kpi::on($this->database)->get();
+        $kpiModel =  Kpi::on($this->database)->with('kpiType')->get();
         $this->records = $kpiModel;
         $this->result = true;
         $this->message = 'Registros consultados exitosamente';
@@ -37,11 +37,17 @@ class KpiController extends ResponseController
             'age'         => ['required', 'string'],
         ]);
         try {
-            $kpi = Kpi::create($validate);
-            if ($kpi) {
-                $this->result = true;
-                $this->message = 'Se almacenó el registro correctamente';
+            foreach ($validate as $key => $value) {
+                $kpiType = $this->getKpiType($key);
+                Kpi::on($this->database)->create([
+                    'value'       => $value,
+                    'kpi_type_id' => $kpiType->id,
+                    'user_id'     => 1, //TODO: set user from auth
+                ]);
             }
+
+            $this->result = true;
+            $this->message = 'Se almacenó el registro correctamente';
             $this->statusCode = 200;
             return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
         } catch (Exception $exception) {

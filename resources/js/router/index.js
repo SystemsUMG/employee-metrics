@@ -14,7 +14,7 @@ const routes = [
     {
         path: "/",
         name: "/",
-        redirect: "/survey",
+        redirect: "/database",
     },
     {
         path: '/database',
@@ -50,9 +50,15 @@ const routes = [
         ]
     },
     {
-        path: "/dashboard-default",
-        name: "Dashboard",
-        component: Dashboard,
+        path: '/admin',
+        component: AdminLayout,
+        children: [
+            {
+                path: "",
+                name: "admin",
+                component: Dashboard,
+            },
+        ]
     },
     {
         path: "/billing",

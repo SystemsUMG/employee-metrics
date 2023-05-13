@@ -205,7 +205,11 @@ return [
         'document.name' => 'nombre del documento',
         'user_id' => 'usuario',
         'document.review_group_id' => 'grupo de revisión',
-        'digitalSignature' => 'firma digital',
+
+        'study_level' => 'nivel de estudios ',
+        'antiquity' => 'antigüedad',
+        'absences' => 'ausencias',
+        'age' => 'edad',
     ],
 
 ];

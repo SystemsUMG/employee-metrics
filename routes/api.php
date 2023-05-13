@@ -27,8 +27,7 @@ Route::prefix('/')->middleware('guest')->group(function () {
     });
 });
 
-Route::name('api.')->middleware('guest')->group(function () {
+Route::name('api.')->middleware('guest')->group(function () { //TODO: set middleware login
     Route::apiResource('kpis', KpiController::class);
-
     Route::get('dynamic-values', [KpiController::class, 'dynamicValues']);
 });

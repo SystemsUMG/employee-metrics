@@ -107,26 +107,64 @@ export default {
     mounted() {
         const loader = this.$showLoader()
         let _this = this
-        axios({url: '/dynamic-values', method: 'GET' })
-            .then((resp) => {
-                if (resp.data.result) {
-                    _this.study_levels = resp.data.records.study_levels
-                    _this.antiquities = resp.data.records.antiquities
-                    _this.icon = "success"
-                }
-                _this.message = resp.data.message
-                showToast(_this.icon, _this.message)
-                loader.hide()
-            })
-            .catch((err) => {
-                showToast()
-                loader.hide()
-            })
-
+        setTimeout(function() {
+            axios({url: '/dynamic-values', method: 'GET' })
+                .then((resp) => {
+                    if (resp.data.result) {
+                        _this.study_levels = resp.data.records.study_levels
+                        _this.antiquities = resp.data.records.antiquities
+                        _this.icon = "success"
+                    }
+                    _this.message = resp.data.message
+                    showToast(_this.icon, _this.message)
+                    loader.hide()
+                })
+                .catch((err) => {
+                    showToast()
+                    loader.hide()
+                })
+        }, 1000)
     },
     methods:{
-        SEND() {
-            console.log('click')
+        SEND: function(){
+            const loader = this.$showLoader()
+            let _this = this
+
+            let form = new FormData()
+            for (const key of Object.keys(this.data)) {
+                const item = this.data[key]
+                if(item != null){
+                    form.append(key, item)
+                }
+            }
+
+            this.errors = []
+            setTimeout(function() {
+                axios({url: '/kpis', method: 'POST', data: form })
+                    .then((resp) => {
+                        if (resp.data.result) {
+                            _this.icon = "success"
+                            _this.message = resp.data.message
+                            _this.$router.push({ name: 'admin' })
+                        } else {
+                            _this.icon = 'error'
+                            _this.message = resp.data.message.split("(")[0]
+                        }
+                        showToast(_this.icon, _this.message)
+                        loader.hide()
+                    })
+                    .catch((err) => {
+                        if (err.response.status === 422) {
+                            _this.errors = err.response.data.errors
+                            _this.icon = 'error'
+                            _this.message = err.response.data.message.split("(")[0]
+                            showToast(_this.icon, _this.message)
+                        } else {
+                            showToast()
+                        }
+                        loader.hide()
+                    })
+            }, 1000)
         }
     }
 };
