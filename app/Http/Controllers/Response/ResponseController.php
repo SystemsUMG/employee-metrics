@@ -15,11 +15,12 @@ class ResponseController extends Controller
 
     public function __construct(Request $request)
     {
+        parent::__construct();
         $this->result     = false;
         $this->records    = [];
         $this->message    = 'Ha ocurrido un error.';
         $this->statusCode = 400;
-        $this->database = $request->header('Database');
+        $this->database = $request->header('Database') ?? 'mysql';
     }
 
     //Response para todos los servicios

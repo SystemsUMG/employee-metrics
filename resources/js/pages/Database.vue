@@ -16,7 +16,7 @@
                     <div class="card z-index-0">
                         <div class="card-header text-center">
                             <div class="avatar avatar-xxl position-relative">
-                                <img src="../assets/img/logo.png" class="border-radius-lg" alt="logo"/>
+                                <img src="../assets/img/logos/isologo.png" class="border-radius-lg" alt="logo"/>
                             </div>
                             <h5 class="my-4">Seleccione Base de Datos</h5>
                         </div>

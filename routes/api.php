@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\KpiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,10 @@ Route::prefix('/')->middleware('guest')->group(function () {
         Route::post('login', 'login');
         Route::post('register', 'register');
     });
+});
+
+Route::name('api.')->middleware('guest')->group(function () {
+    Route::apiResource('kpis', KpiController::class);
+
+    Route::get('dynamic-values', [KpiController::class, 'dynamicValues']);
 });
