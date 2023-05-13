@@ -1,11 +1,10 @@
 <template>
-    <!-- -------- START FOOTER 3 w/ COMPANY DESCRIPTION WITH LINKS & SOCIAL ICONS & COPYRIGHT ------- -->
-  <footer class="py-5 footer">
+  <footer class="py-3 footer">
     <div class="container">
       <div class="row">
         <div class="mx-auto mt-1 text-center col-8">
           <p class="mb-0 text-secondary">
-            Survey Quiz | {{ new Date().getFullYear() }}
+            Métricas de Empleados | {{ new Date().getFullYear() }}
           </p>
         </div>
       </div>

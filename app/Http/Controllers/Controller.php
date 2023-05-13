@@ -30,12 +30,10 @@ class Controller extends BaseController
         ];
 
         $this->antiquities = [
-            1 => 'Menos de un año',
-            2 => 'Un año',
-            3 => 'Dos años',
-            4 => 'Tres años',
-            5 => 'Cuatro años',
-            6 => 'Más de cinco años',
+            1 => '0 - 1',
+            2 => '2 - 5',
+            3 => '6 - 10',
+            4 => '11 o más'
         ];
     }
 

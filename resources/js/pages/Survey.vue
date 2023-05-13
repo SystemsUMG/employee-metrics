@@ -17,24 +17,24 @@
                         <form @submit.prevent="SEND()">
                             <div class="card-header pb-0">
                                 <div class="d-flex align-items-center">
-                                    <p class="mb-0">Por favor completa la información solicitada</p>
+                                    <p class="mb-0">Por favor complete la información solicitada</p>
                                     <argon-button type="submit" color="success" size="sm" class="ms-auto">Enviar</argon-button>
                                 </div>
                             </div>
                             <div class="card-body">
                                 <hr class="horizontal light" />
-                                <p class="text-uppercase text-sm">User Information</p>
+                                <p class="text-uppercase text-sm">Información Personal</p>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="salary" class="form-control-label">Salario</label>
+                                            <label for="salary" class="form-control-label">Ingrese su Salario Actual</label>
                                             <input id="salary" class="form-control" type="number" v-model="data.salary" :class="errors.salary ? 'is-invalid' : ''">
                                             <small class="invalid-feedback">{{ errors.salary ? errors.salary[0] : '' }}</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="study_level" class="form-control-label">Nivel de Estudios</label>
+                                            <label for="study_level" class="form-control-label">Seleccione su Nivel de Estudios</label>
                                             <select  id="study_level" class="form-select" v-model="data.study_level" :class="errors.study_level ? 'is-invalid' : ''">
                                                 <option value="" disabled hidden>Seleccione una opción</option>
                                                 <option v-for="[key, value] in Object.entries(study_levels)" :value="key" :key="key">{{ value }}</option>
@@ -44,7 +44,16 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="antiquity" class="form-control-label">Antigüedad</label>
+                                            <label for="age" class="form-control-label">Ingrese su Edad</label>
+                                            <input id="age" class="form-control" type="number" v-model="data.age" :class="errors.age ? 'is-invalid' : ''">
+                                            <small class="invalid-feedback">{{ errors.age ? errors.age[0] : '' }}</small>
+                                        </div>
+                                    </div>
+                                    <hr class="horizontal light" />
+                                    <p class="text-uppercase text-sm">Información Laboral</p>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="antiquity" class="form-control-label">Años Laborando en la Empresa</label>
                                             <select  id="antiquity" class="form-select" v-model="data.antiquity" :class="errors.antiquity ? 'is-invalid' : ''">
                                                 <option value="" disabled hidden>Seleccione una opción</option>
                                                 <option v-for="[key, value] in Object.entries(antiquities)" :value="key" :key="key">{{ value }}</option>
@@ -54,16 +63,9 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="absences" class="form-control-label">Ausencias</label>
+                                            <label for="absences" class="form-control-label">Promedio de Faltas al Mes</label>
                                             <input id="absences" class="form-control" type="number" v-model="data.absences" :class="errors.absences ? 'is-invalid' : ''">
                                             <small class="invalid-feedback">{{ errors.absences ? errors.absences[0] : '' }}</small>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="age" class="form-control-label">Edad</label>
-                                            <input id="age" class="form-control" type="number" v-model="data.age" :class="errors.age ? 'is-invalid' : ''">
-                                            <small class="invalid-feedback">{{ errors.age ? errors.age[0] : '' }}</small>
                                         </div>
                                     </div>
                                 </div>
