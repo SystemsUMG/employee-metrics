@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\Response\ResponseController;
 use App\Models\Kpi;
-use App\Models\KpiType;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 
@@ -16,7 +15,7 @@ class KpiController extends ResponseController
      */
     public function index()
     {
-        $kpiModel =  Kpi::on($this->database)->with('kpiType')->get();
+        $kpiModel =  Kpi::on($this->database)->with(['kpiType', 'user'])->get();
         $this->records = $kpiModel;
         $this->result = true;
         $this->message = 'Registros consultados exitosamente';
@@ -39,11 +38,15 @@ class KpiController extends ResponseController
         try {
             foreach ($validate as $key => $value) {
                 $kpiType = $this->getKpiType($key);
-                Kpi::on($this->database)->create([
-                    'value'       => $value,
-                    'kpi_type_id' => $kpiType->id,
-                    'user_id'     => 1, //TODO: set user from auth
-                ]);
+                if ($kpiType->alias == 'age') {
+                    User::where('id', 1)->update(['age' => $value]);
+                } else {
+                    Kpi::on($this->database)->create([
+                        'value'       => $value,
+                        'kpi_type_id' => $kpiType->id,
+                        'user_id'     => 1, //TODO: set user from auth
+                    ]);
+                }
             }
 
             $this->result = true;
