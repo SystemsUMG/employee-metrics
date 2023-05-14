@@ -3,7 +3,7 @@ import BaseLayout from "../layouts/guest/BaseLayout.vue";
 import AdminLayout from "../layouts/auth/AdminLayout.vue";
 import Database from "../pages/Database.vue";
 import Survey from "../pages/Survey.vue";
-import Dashboard from "../views/Dashboard.vue";
+import Dashboard from "../pages/Dashboard.vue";
 import Tables from "../views/Tables.vue";
 import Billing from "../views/Billing.vue";
 import Profile from "../views/Profile.vue";

@@ -15,16 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::name('api.')->middleware('guest')->group(function () { //TODO: set middleware login
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::apiResource('kpis', KpiController::class);
+Route::name('api.')->middleware('guest')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('login', 'login');
+        Route::post('register', 'register');
     });
-
-    Route::prefix('/')->middleware('guest')->group(function () {
-        Route::controller(AuthController::class)->group(function () {
-            Route::post('login', 'login');
-            Route::post('register', 'register');
-        });
-        Route::get('dynamic-values', [KpiController::class, 'dynamicValues']);
-    });
+    Route::get('dynamic-values', [KpiController::class, 'dynamicValues']);
 });
+
+
+Route::apiResource('kpis', KpiController::class);
+Route::get('kpis-user', [KpiController::class, 'userKpis']);
