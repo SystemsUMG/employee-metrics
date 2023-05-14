@@ -20,7 +20,7 @@
 </template>
 <script>
 import SidenavList from "./SidenavList.vue";
-import logo from "../../assets/img/logos/logo.png";
+import logo from "../../../assets/img/logos/logo.png";
 
 export default {
   name: "index",

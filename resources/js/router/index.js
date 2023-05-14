@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
-import BaseLayout from "../views/BaseLayout.vue";
-import AdminLayout from "../views/AdminLayout.vue";
+import BaseLayout from "../layouts/guest/BaseLayout.vue";
+import AdminLayout from "../layouts/auth/AdminLayout.vue";
 import Database from "../pages/Database.vue";
 import Survey from "../pages/Survey.vue";
 import Dashboard from "../views/Dashboard.vue";
 import Tables from "../views/Tables.vue";
 import Billing from "../views/Billing.vue";
 import Profile from "../views/Profile.vue";
-import Signup from "../views/Signup.vue";
-import Signin from "../views/Signin.vue";
+import SignUp from "../pages/Auth/SignUp.vue";
+import SignIn from "../pages/Auth/SignIn.vue";
 
 const routes = [
     {
@@ -26,6 +26,16 @@ const routes = [
                 component: Database
             }
         ]
+    },
+    {
+        path: "/sign-in",
+        name: "sign-in",
+        component: SignIn,
+    },
+    {
+        path: "/sign-up",
+        name: "Sign-up",
+        component: SignUp,
     },
     {
         path: '/survey',
@@ -70,17 +80,6 @@ const routes = [
         name: "Profile",
         component: Profile,
     },
-    {
-        path: "/signin",
-        name: "Signin",
-        component: Signin,
-    },
-    {
-        path: "/signup",
-        name: "Signup",
-        component: Signup,
-    },
-
 ];
 
 const router = createRouter({

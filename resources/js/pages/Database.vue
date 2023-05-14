@@ -1,6 +1,6 @@
 <template>
     <main class="main-content mt-0">
-        <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg bg-cover-main">
+        <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg bg-cover-database">
             <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container">
                 <div class="row justify-content-center">
@@ -16,7 +16,7 @@
                     <div class="card z-index-0">
                         <div class="card-header text-center">
                             <div class="avatar avatar-xxl position-relative">
-                                <img :src="logo" class="border-radius-lg" alt="logo"/>
+                                <img :src="logo" class="border-radius-lg" alt="logo" />
                             </div>
                             <h5 class="my-4">Seleccione Base de Datos</h5>
                         </div>
@@ -36,33 +36,33 @@
     <app-footer />
 </template>
 <script>
-import AppFooter from "../examples/PageLayout/Footer.vue";
+import AppFooter from "../layouts/guest/navbars/Footer.vue";
 import ArgonButton from "../components/ArgonButton.vue";
-import logo from "../assets/img/logos/isologo.png";
+import logo from "../assets/img/logos/logo.png";
 
 export default {
     name: "Database",
     components: {
         AppFooter,
-        ArgonButton,
+        ArgonButton
     },
     data() {
         return {
-            logo,
-        }
+            logo
+        };
     },
     methods: {
-        setDatabase(database = 'mysql') {
+        setDatabase(database = "mysql") {
             //Header para DB
-            localStorage.setItem('database', database);
-            axios.defaults.headers.common['Database'] = database
-            this.$router.push({ name: 'survey' })
+            localStorage.setItem("database", database);
+            axios.defaults.headers.common["Database"] = database;
+            this.$router.push({ name: "sign-in" });
         }
     }
 };
 </script>
 <style>
-.bg-cover-main {
+.bg-cover-database {
     background-image: url(../assets/img/covers/signup-cover.jpg);
     background-position: top;
 }

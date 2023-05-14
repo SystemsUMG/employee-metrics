@@ -81,7 +81,7 @@
 
 <script>
 import ArgonButton from "../components/ArgonButton.vue";
-import AppFooter from "../examples/PageLayout/Footer.vue";
+import AppFooter from "../layouts/guest/navbars/Footer.vue";
 import { showToast } from "../helpers";
 
 export default {

@@ -16,9 +16,9 @@
     </main>
 </template>
 <script>
-import Sidenav from "../examples/Sidenav";
-import Navbar from "../examples/Navbars/Navbar.vue";
-import AppFooter from "../examples/Footer.vue";
+import Sidenav from "../../layouts/auth/sidenav";
+import Navbar from "../../layouts/auth/navbars/Navbar.vue";
+import AppFooter from "../../layouts/auth/navbars/Footer.vue";
 import { mapMutations } from "vuex";
 
 export default {

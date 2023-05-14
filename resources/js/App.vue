@@ -6,7 +6,7 @@
     </div>
 </template>
 <script>
-import BaseLayout from './views/BaseLayout.vue';
+import BaseLayout from './layouts/guest/BaseLayout.vue';
 import { activateDarkMode } from "./assets/js/dark-mode";
 
 export default {
