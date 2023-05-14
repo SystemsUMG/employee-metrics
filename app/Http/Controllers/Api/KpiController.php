@@ -36,16 +36,17 @@ class KpiController extends ResponseController
             'age'         => ['required', 'string'],
         ]);
         try {
+            $user = 2; //TODO: set user from auth
             foreach ($validate as $key => $value) {
                 $kpiType = $this->getKpiType($key);
+                //Kpi de edad en tabla usuarios
                 if ($kpiType->alias == 'age') {
-                    User::where('id', 1)->update(['age' => $value]);
+                    User::on($this->database)->where('id', 1)->update(['age' => $value]);
                 } else {
-                    Kpi::on($this->database)->create([
-                        'value'       => $value,
-                        'kpi_type_id' => $kpiType->id,
-                        'user_id'     => 1, //TODO: set user from auth
-                    ]);
+                     Kpi::on($this->database)->updateOrCreate(
+                        ['kpi_type_id' => $kpiType->id, 'user_id' => $user],
+                        ['value' => $value]
+                    );
                 }
             }
 
@@ -80,6 +81,20 @@ class KpiController extends ResponseController
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Display a listing of kpis per user.
+     */
+    public function userKpis()
+    {
+        $kpis =  User::on($this->database)->with(['kpis.kpiType', 'department'])->get();
+
+        $this->records = $kpis;
+        $this->result = true;
+        $this->message = 'Registros consultados exitosamente';
+        $this->statusCode = 200;
+        return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
     }
 
     /**
