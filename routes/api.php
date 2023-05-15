@@ -25,4 +25,3 @@ Route::name('api.')->middleware('guest')->group(function () {
 
 
 Route::apiResource('kpis', KpiController::class);
-Route::get('kpis-user', [KpiController::class, 'userKpis']);
