@@ -102,8 +102,8 @@ class KpiController extends ResponseController
      */
     private function totals()
     {
-        $kpis = Kpi::all();
-        $users = User::all();
+        $kpis = Kpi::on($this->database)->get();
+        $users = User::on($this->database)->get();
         $form = $kpis->where('kpi_type_id', 1)->sum('value');
         $absents = $kpis->where('kpi_type_id', 4)->sum('value');
         $update = $users->max('updated_at')->format('d/m/Y');
@@ -183,7 +183,7 @@ class KpiController extends ResponseController
      */
     public function departments()
     {
-        $departments = Department::withCount('users')->get()->pluck('users_count', 'name');
+        $departments = Department::on($this->database)->withCount('users')->get()->pluck('users_count', 'name');
 
         return [
             'labels' => $departments->keys()->all(),
@@ -222,7 +222,7 @@ class KpiController extends ResponseController
 
     private function dynamicKpis($alias, $dynamic)
     {
-        $kpis = Kpi::whereRelation('kpiType', function ($query) use ($alias) {
+        $kpis = Kpi::on($this->database)->whereRelation('kpiType', function ($query) use ($alias) {
             $query->where('alias', $alias);
         })->get()->pluck('value')->countBy();
 
