@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12 mb-lg">
+                    <div class="col-lg-12">
                         <div class="card z-index-2">
                             <departments-line-chart :departments="departments"/>
                         </div>
@@ -21,14 +21,14 @@
                 </div>
             </div>
             <div class="col-lg-5">
-                <div class="row">
+                <div class="row  mt-4 mt-lg-0">
                     <div class="col-lg-12">
                         <study-levels-donut-chart :study_levels="study_levels"/>
                     </div>
                 </div>
                 <div class="row mt-4">
                     <div class="col-lg-12">
-                        <categories-card/>
+                        <antiquities-bar-chart :antiquities="antiquities"/>
                     </div>
                 </div>
             </div>
@@ -43,10 +43,10 @@
 <script>
 import KpisCard from "../layouts/auth/cards/KpisCard.vue";
 import DepartmentsLineChart from "../layouts/auth/charts/DepartmentsLineChart.vue";
-import CategoriesCard from "../views/components/CategoriesCard.vue";
 import KpisTable from "../layouts/auth/tables/KpisTable.vue";
 import {showToast} from "../helpers";
 import StudyLevelsDonutChart from "../layouts/auth/charts/StudyLevelsDonutChart.vue";
+import AntiquitiesBarChart from "../layouts/auth/charts/AntiquitiesBarChart.vue";
 
 export default {
     name: "dashboard-default",
@@ -63,13 +63,17 @@ export default {
                 values: [],
                 percentages: []
             },
+            antiquities: {
+                labels: [],
+                values: []
+            },
         };
     },
     components: {
+        AntiquitiesBarChart,
         StudyLevelsDonutChart,
         KpisCard,
         DepartmentsLineChart,
-        CategoriesCard,
         KpisTable,
     },
     mounted() {
@@ -83,6 +87,7 @@ export default {
                         _this.totals = resp.data.records.totals
                         _this.departments = resp.data.records.departments
                         _this.study_levels = resp.data.records.study_levels
+                        _this.antiquities = resp.data.records.antiquities
                         _this.icon = "success"
                     }
                     _this.message = resp.data.message

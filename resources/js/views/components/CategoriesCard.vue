@@ -86,30 +86,6 @@
             </button>
           </div>
         </li>
-        <li
-          class="border-0 list-group-item d-flex justify-content-between border-radius-lg"
-          :class="this.$store.state.isRTL ? 'pe-0' : 'ps-0'"
-        >
-          <div class="d-flex align-items-center">
-            <div
-              class="text-center shadow icon icon-shape icon-sm bg-gradient-dark"
-              :class="this.$store.state.isRTL ? 'ms-3' : 'me-3'"
-            >
-              <i class="ni ni-satisfied text-white opacity-10"></i>
-            </div>
-            <div class="d-flex flex-column">
-              <h6 class="mb-1 text-sm text-dark">{{ title4 }}</h6>
-              <span class="text-xs font-weight-bold">{{ title4Desc }}</span>
-            </div>
-          </div>
-          <div class="d-flex">
-            <button
-              class="my-auto btn btn-link btn-icon-only btn-rounded btn-sm text-dark icon-move-right"
-            >
-              <i class="ni ni-bold-right" aria-hidden="true"></i>
-            </button>
-          </div>
-        </li>
       </ul>
     </div>
   </div>

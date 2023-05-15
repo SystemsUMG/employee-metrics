@@ -22,6 +22,7 @@ class KpiController extends ResponseController
                 'users'        => $this->userKpis(),
                 'departments'  => $this->departments(),
                 'study_levels' => $this->studyLevels(),
+                'antiquities'  => $this->antiquities(),
             ];
 
             $this->records = $records;
@@ -191,32 +192,49 @@ class KpiController extends ResponseController
     }
 
     /**
-     * Return number of users per department.
+     * Return number of users per study level.
      */
     private function studyLevels()
     {
-        $kpis = Kpi::whereRelation('kpiType', function ($query) {
-            $query->where('alias', 'study_level');
-        })->get()->pluck('value')->countBy();
-
-        $labels = array_values($this->study_levels);
-        //Obtener key de study_level y retornar valor del modelo
-        $values = array_map(function ($study_level) use ($kpis) {
-            return $kpis->get(array_search($study_level, $this->study_levels), 0);
-        }, $labels);
+        $studyLevels = $this->dynamicKpis('study_level', $this->study_levels);
+        $values = $studyLevels['values'];
 
         //Porcentajes
         $total = array_sum($values);
         $percentages = array_reduce($values, function ($result, $value) use ($total) {
-            $percentage = round(($value / $total) * 100, 2);
+            $percentage = round(($value / $total) * 100, 1);
             $result[] = $percentage;
             return $result;
         }, []);
 
+        $studyLevels['percentages'] = $percentages;
+
+        return $studyLevels;
+    }
+
+    /**
+     * Return number of users per antiquity.
+     */
+    private function antiquities()
+    {
+        return $this->dynamicKpis('antiquity', $this->antiquities);
+    }
+
+    private function dynamicKpis($alias, $dynamic)
+    {
+        $kpis = Kpi::whereRelation('kpiType', function ($query) use ($alias) {
+            $query->where('alias', $alias);
+        })->get()->pluck('value')->countBy();
+
+        $labels = array_values($dynamic);
+        //Obtener key de study_level y retornar valor del modelo
+        $values = array_map(function ($value) use ($kpis, $dynamic) {
+            return $kpis->get(array_search($value, $dynamic), 0);
+        }, $labels);
+
         return [
             'labels'      => $labels,
-            'values'      => $values,
-            'percentages' => $percentages,
+            'values'      => $values
         ];
     }
 
