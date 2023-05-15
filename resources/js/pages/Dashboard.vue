@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-lg-12 mb-lg">
                         <div class="card z-index-2">
-                            <gradient-line-chart/>
+                            <departments-line-chart  :departments="departments"/>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
 </template>
 <script>
 import KpisCard from "../layouts/auth/cards/KpisCard.vue";
-import GradientLineChart from "../examples/Charts/GradientLineChart.vue";
+import DepartmentsLineChart from "../layouts/auth/charts/DepartmentsLineChart.vue";
 import ConsumptionByRoomChart from "../examples/Charts/ConsumptionRoomChart.vue";
 import CategoriesCard from "../views/components/CategoriesCard.vue";
 import KpisTable from "../layouts/auth/tables/KpisTable.vue";
@@ -54,12 +54,16 @@ export default {
         return {
             users: [],
             totals: [],
+            departments: {
+                labels: [],
+                values: []
+            },
         };
     },
     components: {
         ConsumptionByRoomChart,
         KpisCard,
-        GradientLineChart,
+        DepartmentsLineChart,
         CategoriesCard,
         KpisTable,
     },
@@ -72,6 +76,7 @@ export default {
                     if (resp.data.result) {
                         _this.users = resp.data.records.users
                         _this.totals = resp.data.records.totals
+                        _this.departments = resp.data.records.departments
                         _this.icon = "success"
                     }
                     _this.message = resp.data.message

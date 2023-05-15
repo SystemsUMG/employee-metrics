@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Response\ResponseController;
+use App\Models\Department;
 use App\Models\Kpi;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 
 class KpiController extends ResponseController
 {
@@ -18,8 +18,9 @@ class KpiController extends ResponseController
     {
         try {
             $records = [
-                'totals' => $this->totals(),
-                'users'  => $this->userKpis(),
+                'totals'      => $this->totals(),
+                'users'       => $this->userKpis(),
+                'departments' => $this->departments(),
             ];
 
             $this->records = $records;
@@ -106,7 +107,7 @@ class KpiController extends ResponseController
         $update = $users->max('updated_at')->format('d/m/Y');
         $total = $users->count();
 
-        $totals = [
+        return [
             [
                 'title'          => 'Planilla',
                 'value'          => "Q$form",
@@ -132,8 +133,6 @@ class KpiController extends ResponseController
                 'iconBackground' => 'bg-gradient-warning',
             ],
         ];
-
-        return $totals;
     }
 
     /**
@@ -175,6 +174,19 @@ class KpiController extends ResponseController
 
                 return $user;
             });
+    }
+
+    /**
+     * Return number of users per department.
+     */
+    public function departments()
+    {
+        $departments = Department::withCount('users')->get()->pluck('users_count', 'name');
+
+        return [
+            'labels' => $departments->keys()->all(),
+            'values' => $departments->values()->all(),
+        ];
     }
 
     /**
