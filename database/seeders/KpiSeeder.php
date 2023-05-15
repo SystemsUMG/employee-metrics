@@ -26,10 +26,8 @@ class KpiSeeder extends Seeder
                         $value = fake()->numberBetween(3000, 50000);
                         break;
                     case 2:
-                        $value = fake()->numberBetween(1, 4);
-                        break;
                     case 3:
-                        $value = fake()->numberBetween(1, 6);
+                        $value = fake()->numberBetween(1, 4);
                         break;
                     case 4:
                         $value = fake()->numberBetween(0, 15);
