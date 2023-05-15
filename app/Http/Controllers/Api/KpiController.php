@@ -18,9 +18,10 @@ class KpiController extends ResponseController
     {
         try {
             $records = [
-                'totals'      => $this->totals(),
-                'users'       => $this->userKpis(),
-                'departments' => $this->departments(),
+                'totals'       => $this->totals(),
+                'users'        => $this->userKpis(),
+                'departments'  => $this->departments(),
+                'study_levels' => $this->studyLevels(),
             ];
 
             $this->records = $records;
@@ -190,6 +191,36 @@ class KpiController extends ResponseController
     }
 
     /**
+     * Return number of users per department.
+     */
+    private function studyLevels()
+    {
+        $kpis = Kpi::whereRelation('kpiType', function ($query) {
+            $query->where('alias', 'study_level');
+        })->get()->pluck('value')->countBy();
+
+        $labels = array_values($this->study_levels);
+        //Obtener key de study_level y retornar valor del modelo
+        $values = array_map(function ($study_level) use ($kpis) {
+            return $kpis->get(array_search($study_level, $this->study_levels), 0);
+        }, $labels);
+
+        //Porcentajes
+        $total = array_sum($values);
+        $percentages = array_reduce($values, function ($result, $value) use ($total) {
+            $percentage = round(($value / $total) * 100, 2);
+            $result[] = $percentage;
+            return $result;
+        }, []);
+
+        return [
+            'labels'      => $labels,
+            'values'      => $values,
+            'percentages' => $percentages,
+        ];
+    }
+
+    /**
      * Display a listing of dynamic values.
      */
     public function dynamicValues()
@@ -203,6 +234,5 @@ class KpiController extends ResponseController
         $this->statusCode = 200;
         return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
     }
-
 
 }

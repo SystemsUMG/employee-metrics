@@ -15,7 +15,7 @@
                 <div class="row">
                     <div class="col-lg-12 mb-lg">
                         <div class="card z-index-2">
-                            <departments-line-chart  :departments="departments"/>
+                            <departments-line-chart :departments="departments"/>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
             <div class="col-lg-5">
                 <div class="row">
                     <div class="col-lg-12">
-                        <consumption-by-room-chart/>
+                        <study-levels-donut-chart :study_levels="study_levels"/>
                     </div>
                 </div>
                 <div class="row mt-4">
@@ -43,10 +43,10 @@
 <script>
 import KpisCard from "../layouts/auth/cards/KpisCard.vue";
 import DepartmentsLineChart from "../layouts/auth/charts/DepartmentsLineChart.vue";
-import ConsumptionByRoomChart from "../examples/Charts/ConsumptionRoomChart.vue";
 import CategoriesCard from "../views/components/CategoriesCard.vue";
 import KpisTable from "../layouts/auth/tables/KpisTable.vue";
 import {showToast} from "../helpers";
+import StudyLevelsDonutChart from "../layouts/auth/charts/StudyLevelsDonutChart.vue";
 
 export default {
     name: "dashboard-default",
@@ -58,10 +58,15 @@ export default {
                 labels: [],
                 values: []
             },
+            study_levels: {
+                labels: [],
+                values: [],
+                percentages: []
+            },
         };
     },
     components: {
-        ConsumptionByRoomChart,
+        StudyLevelsDonutChart,
         KpisCard,
         DepartmentsLineChart,
         CategoriesCard,
@@ -77,6 +82,7 @@ export default {
                         _this.users = resp.data.records.users
                         _this.totals = resp.data.records.totals
                         _this.departments = resp.data.records.departments
+                        _this.study_levels = resp.data.records.study_levels
                         _this.icon = "success"
                     }
                     _this.message = resp.data.message
