@@ -8,6 +8,7 @@ import Survey from "../pages/Survey.vue";
 import Dashboard from "../pages/Dashboard.vue";
 import Users from "../pages/users/Index.vue";
 import Departments from "../pages/departments/Index.vue";
+import NotFound from "../pages/NotFound.vue";
 
 const routes = [
     {
@@ -79,6 +80,11 @@ const routes = [
                 component: Departments,
             },
         ]
+    },
+    {
+        path: "/:catchAll(.*)",
+        name: NotFound,
+        component: NotFound
     }
 ];
 
