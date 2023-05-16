@@ -8,10 +8,10 @@
             <div class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4" id="navbar">
                 <ul class="navbar-nav justify-content-end ms-md-auto">
                     <li class="nav-item d-flex align-items-center">
-                        <router-link :to="{ name: 'sign-in' }" class="px-0 nav-link font-weight-bold text-white">
+                        <button @click="logout" class="btn">
                             <i class="fa fa-power-off me-sm-2"></i>
                             <span class="d-sm-inline d-none">Cerrar Sesión</span>
-                        </router-link>
+                        </button>
                     </li>
                     <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
                         <a href="#" @click="toggleSidebar" class="p-0 nav-link text-white" id="iconNavbarSidenav">
@@ -45,6 +45,15 @@ export default {
         toggleSidebar() {
             this.toggleSidebarColor("bg-default");
             this.navbarMinimize();
+        },
+        ...mapActions({
+            signOut:"auth/logout"
+        }),
+        async logout(){
+            await axios.post('/logout').then(({data})=>{
+                this.signOut()
+                this.$router.push({name:"sign-in"})
+            })
         }
     },
     components: {
