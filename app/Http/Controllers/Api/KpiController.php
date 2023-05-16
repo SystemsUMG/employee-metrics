@@ -78,23 +78,59 @@ class KpiController extends ResponseController
      */
     public function show(string $id)
     {
-        //
+        try {
+            $value = $id; //TODO: set user from auth
+
+            $user = User::on($this->database)
+                ->select('id', 'age')
+                ->where('id', $value)
+                ->with(['kpis' => function ($query) {
+                    $query->select('value', 'kpi_type_id', 'user_id')
+                        ->with(['kpiType' => function ($query) {
+                            $query->select('id', 'alias');
+                        }]);
+                }])
+                ->first();
+            $user->kpis->map(function($kpi){
+                $kpi->type = $kpi->kpiType->alias; //Retornar unicamente alias y value
+                unset($kpi->id);
+                unset($kpi->user_id);
+                unset($kpi->kpi_type_id);
+                unset($kpi->kpiType);
+                return $kpi;
+            });
+
+            $this->records = $user;
+            $this->result = true;
+            $this->message = 'Registros consultados correctamente';
+            $this->statusCode = 200;
+        } catch (Exception $exception) {
+            $this->message = $exception->getMessage();
+        } finally {
+            return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
+        }
     }
 
     /**
-     * Update the specified resource in storage.
+     * Display a listing of kpis per user.
      */
-    public function update(Request $request, string $id)
+    public function partialKpis()
     {
-        //
-    }
+        try {
+            $records = [
+                'study_levels' => $this->studyLevels(),
+                'antiquities'  => $this->antiquities(),
+            ];
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            $this->records = $records;
+            $this->result = true;
+            $this->message = 'Registros consultados exitosamente';
+            $this->statusCode = 200;
+        } catch (Exception $exception) {
+            $this->message = $exception->getMessage();
+        } finally {
+            return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
+        }
     }
 
     /**

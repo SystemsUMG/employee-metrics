@@ -1,20 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
 import store from "../store";
+
 import BaseLayout from "../layouts/guest/BaseLayout.vue";
 import AdminLayout from "../layouts/auth/AdminLayout.vue";
-
-const Database = () => import("../pages/Database.vue");
-const SignIn = () => import("../pages/Auth/SignIn.vue");
-const SignUp = () => import("../pages/Auth/SignUp.vue");
-const Survey = () => import("../pages/Survey.vue");
-const Dashboard = () => import("../pages/Dashboard.vue");
-
-
-/*
-import Tables from "../views/Tables.vue";
-import Billing from "../views/Billing.vue";
-import Profile from "../views/Profile.vue";
-*/
+import Database from "../pages/Database.vue";
+import SignUp from "../pages/Auth/SignUp.vue";
+import SignIn from "../pages/Auth/SignIn.vue";
+import Survey from "../pages/Survey.vue";
+import Dashboard from "../pages/Dashboard.vue";
+import Users from "../pages/users/Index.vue";
+import Departments from "../pages/departments/Index.vue";
+import NotFound from "../pages/NotFound.vue";
 
 const routes = [
     {
@@ -34,8 +30,8 @@ const routes = [
         },
         children: [
             {
-                path: "",
-                name: "database",
+                path: '',
+                name: 'Database',
                 component: Database
             }
         ]
@@ -67,14 +63,14 @@ const routes = [
         },
         children: [
             {
-                path: "",
-                name: "Survey",
+                path: '',
+                name: 'Survey',
                 component: Survey
             }
         ]
     },
     {
-        path: "/admin",
+        path: '/admin',
         component: AdminLayout,
         meta: {
             middleware: "auth",
@@ -83,36 +79,46 @@ const routes = [
         children: [
             {
                 path: "",
-                name: "admin",
-                component: Dashboard
-            }
+                name: "Dashboard",
+                component: Dashboard,
+            },
         ]
+    },
+    {
+        path: '/users',
+        component: AdminLayout,
+        meta: {
+            middleware: "auth",
+            title: `Usuarios`
+        },
+        children: [
+            {
+                path: "",
+                name: "Usuarios",
+                component: Users,
+            },
+        ]
+    },
+    {
+        path: '/departments',
+        component: AdminLayout,
+        meta: {
+            middleware: "auth",
+            title: `Departamentos`
+        },
+        children: [
+            {
+                path: "",
+                name: "Departamentos",
+                component: Departments,
+            },
+        ]
+    },
+    {
+        path: "/:catchAll(.*)",
+        name: NotFound,
+        component: NotFound
     }
-    /*
-     {
-         path: '/tables',
-         component: AdminLayout,
-         meta:{
-             middleware:"auth",
-         },
-         children: [
-             {
-                 path: "",
-                 name: "tables",
-                 component: Tables,
-             },
-         ]
-     },
-     {
-         path: "/billing",
-         name: "Billing",
-         component: Billing,
-     },
-     {
-         path: "/profile",
-         name: "Profile",
-         component: Profile,
-     },*/
 ];
 
 const router = createRouter({

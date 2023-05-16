@@ -33,8 +33,8 @@
                         <td class="align-middle text-center">
                             <p class="text-xs mb-0">{{ user.age }}</p>
                         </td>
-                        <td class="align-middle text-center" v-for="(kpi, index) in user.kpis" :key="index">
-                            <span class="text-xs">{{ kpi.value }}</span>
+                        <td class="align-middle text-center" v-for="item in 4" :key="item">
+                            <span class="text-xs">{{ user.kpis[item-1] ? user.kpis[item-1].value : '--' }}</span>
                         </td>
                         <td class="align-middle text-center">
                             <span class="text-xs">{{ user.date }}</span>

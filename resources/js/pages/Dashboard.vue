@@ -43,10 +43,10 @@
 <script>
 import KpisCard from "../layouts/auth/cards/KpisCard.vue";
 import DepartmentsLineChart from "../layouts/auth/charts/DepartmentsLineChart.vue";
-import KpisTable from "../layouts/auth/tables/KpisTable.vue";
-import { showToast } from "../helpers";
 import StudyLevelsDonutChart from "../layouts/auth/charts/StudyLevelsDonutChart.vue";
 import AntiquitiesBarChart from "../layouts/auth/charts/AntiquitiesBarChart.vue";
+import KpisTable from "../layouts/auth/tables/KpisTable.vue";
+import {showToast} from "../helpers";
 
 export default {
     name: "dashboard-default",
@@ -70,39 +70,34 @@ export default {
         };
     },
     components: {
-        AntiquitiesBarChart,
-        StudyLevelsDonutChart,
         KpisCard,
         DepartmentsLineChart,
-        KpisTable
+        StudyLevelsDonutChart,
+        AntiquitiesBarChart,
+        KpisTable,
     },
     mounted() {
-        let _this = this;
-        if (_this.$store.state.auth) {
-            const loader = this.$showLoader();
-            setTimeout(function() {
-                axios({ url: "/kpis", method: "GET" })
-                    .then((resp) => {
-                        if (resp.data.result) {
-                            _this.users = resp.data.records.users;
-                            _this.totals = resp.data.records.totals;
-                            _this.departments = resp.data.records.departments;
-                            _this.study_levels = resp.data.records.study_levels;
-                            _this.antiquities = resp.data.records.antiquities;
-                            _this.icon = "success";
-                        }
-                        _this.message = resp.data.message;
-                        showToast(_this.icon, _this.message);
-                        loader.hide();
-                    })
-                    .catch((err) => {
-                        showToast();
-                        loader.hide();
-                    });
-            }, 1000);
-        } else {
-            this.$router.push({ name: "sign-in" });
-        }
-    }
+        const loader = this.$showLoader()
+        let _this = this
+
+        axios({url: '/kpis', method: 'GET'})
+            .then((resp) => {
+                if (resp.data.result) {
+                    _this.users = resp.data.records.users
+                    _this.totals = resp.data.records.totals
+                    _this.departments = resp.data.records.departments
+                    _this.study_levels = resp.data.records.study_levels
+                    _this.antiquities = resp.data.records.antiquities
+                    _this.icon = "success"
+                }
+                _this.message = resp.data.message
+                showToast(_this.icon, _this.message)
+                loader.hide()
+            })
+            .catch(() => {
+                showToast()
+                loader.hide()
+            })
+    },
 };
 </script>

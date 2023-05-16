@@ -3,7 +3,7 @@
     </div>
     <sidenav
         :custom_class="this.$store.state.mcolor"
-        :class="[this.$store.state.isTransparent, this.$store.state.isRTL ? 'fixed-end' : 'fixed-start']"
+        :class="[this.$store.state.isTransparent, 'fixed-start']"
         v-if="this.$store.state.showSidenav"/>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
         <navbar
@@ -12,7 +12,7 @@
             :minNav="navbarMinimize"
             v-if="this.$store.state.showNavbar"/>
         <router-view />
-        <app-footer v-show="this.$store.state.showFooter" />
+        <app-footer/>
     </main>
 </template>
 <script>
