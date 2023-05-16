@@ -141,23 +141,21 @@ export default {
         const loader = this.$showLoader()
         let _this = this
         _this.loadData()
-        setTimeout(function() {
-            axios({url: '/dynamic-values', method: 'GET' })
-                .then((resp) => {
-                    if (resp.data.result) {
-                        _this.study_levels = resp.data.records.study_levels
-                        _this.antiquities = resp.data.records.antiquities
-                        _this.icon = "success"
-                    }
-                    _this.message = resp.data.message
-                    showToast(_this.icon, _this.message)
-                    loader.hide()
-                })
-                .catch((err) => {
-                    showToast()
-                    loader.hide()
-                })
-        }, 1000)
+        axios({url: '/dynamic-values', method: 'GET' })
+            .then((resp) => {
+                if (resp.data.result) {
+                    _this.study_levels = resp.data.records.study_levels
+                    _this.antiquities = resp.data.records.antiquities
+                    _this.icon = "success"
+                }
+                _this.message = resp.data.message
+                showToast(_this.icon, _this.message)
+                loader.hide()
+            })
+            .catch(() => {
+                showToast()
+                loader.hide()
+            })
     },
     methods:{
         SEND: function(){
@@ -173,51 +171,47 @@ export default {
             }
 
             this.errors = []
-            setTimeout(function() {
-                axios({url: '/kpis', method: 'POST', data: form })
-                    .then((resp) => {
-                        if (resp.data.result) {
-                            _this.icon = "success"
-                            _this.message = resp.data.message
-                            _this.loadData()
-                        } else {
-                            _this.icon = 'error'
-                            _this.message = resp.data.message.split("(")[0]
-                        }
-                        _this.show = true
+            axios({url: '/kpis', method: 'POST', data: form })
+                .then((resp) => {
+                    if (resp.data.result) {
+                        _this.icon = "success"
+                        _this.message = resp.data.message
+                        _this.loadData()
+                    } else {
+                        _this.icon = 'error'
+                        _this.message = resp.data.message.split("(")[0]
+                    }
+                    _this.show = true
+                    showToast(_this.icon, _this.message)
+                    loader.hide()
+                })
+                .catch((err) => {
+                    if (err.response.status === 422) {
+                        _this.errors = err.response.data.errors
+                        _this.icon = 'error'
+                        _this.message = err.response.data.message.split("(")[0]
                         showToast(_this.icon, _this.message)
-                        loader.hide()
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 422) {
-                            _this.errors = err.response.data.errors
-                            _this.icon = 'error'
-                            _this.message = err.response.data.message.split("(")[0]
-                            showToast(_this.icon, _this.message)
-                        } else {
-                            showToast()
-                        }
-                        loader.hide()
-                    })
-            }, 1000)
+                    } else {
+                        showToast()
+                    }
+                    loader.hide()
+                })
         },
         loadData() {
             const loader = this.$showLoader()
             let _this = this
-            setTimeout(function () {
-                axios({url: '/kpis', method: 'GET'})
-                    .then((resp) => {
-                        if (resp.data.result) {
-                            _this.charts.study_levels = resp.data.records.study_levels
-                            _this.charts.antiquities = resp.data.records.antiquities
-                        }
-                        loader.hide()
-                    })
-                    .catch((err) => {
-                        showToast()
-                        loader.hide()
-                    })
-            }, 1000)
+            axios({url: '/kpis', method: 'GET'})
+                .then((resp) => {
+                    if (resp.data.result) {
+                        _this.charts.study_levels = resp.data.records.study_levels
+                        _this.charts.antiquities = resp.data.records.antiquities
+                    }
+                    loader.hide()
+                })
+                .catch(() => {
+                    showToast()
+                    loader.hide()
+                })
         }
     }
 };

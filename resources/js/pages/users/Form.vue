@@ -168,35 +168,34 @@ export default {
                     form.append('_method', 'PUT')
                 }
                 this.errors = []
-                setTimeout(function() {
-                    axios({url: '/users' + method, method: 'POST', data: form })
-                        .then((resp) => {
-                            if(resp.data.result) {
-                                _this.icon = 'success'
-                                _this.message = resp.data.message
-                                _this.CLOSE()
-                            } else {
-                                _this.icon = 'error'
-                                _this.message = resp.data.message.split("(")[0]
-                            }
-                            loader.hide()
+                axios({url: '/users' + method, method: 'POST', data: form })
+                    .then((resp) => {
+                        if(resp.data.result) {
+                            _this.icon = 'success'
+                            _this.message = resp.data.message
+                            _this.CLOSE()
+                        } else {
+                            _this.icon = 'error'
+                            _this.message = resp.data.message.split("(")[0]
+                        }
+                        loader.hide()
+                        showToast(_this.icon, _this.message)
+                        _this.load = false
+                        _this.count = 0
+                    })
+                    .catch((err) => {
+                        if(err.response.status === 422){
+                            _this.errors = err.response.data.errors
+                            _this.icon = 'error'
+                            _this.message = err.response.data.message.split("(")[0]
                             showToast(_this.icon, _this.message)
-                            _this.load = false
-                            _this.count = 0
-                        }).catch((err) => {
-                            if(err.response.status === 422){
-                                _this.errors = err.response.data.errors
-                                _this.icon = 'error'
-                                _this.message = err.response.data.message.split("(")[0]
-                                showToast(_this.icon, _this.message)
-                            } else {
-                                showToast()
-                            }
-                            loader.hide()
-                            _this.load = false
-                            _this.count = 0
-                        })
-                }, 1000)
+                        } else {
+                            showToast()
+                        }
+                        loader.hide()
+                        _this.load = false
+                        _this.count = 0
+                    })
             }
         }
     }

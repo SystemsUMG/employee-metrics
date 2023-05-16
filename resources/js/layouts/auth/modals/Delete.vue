@@ -57,30 +57,29 @@ export default {
             _this.count++
             _this.load = true
             if(_this.count === 1){
-                setTimeout(function() {
-                    axios({url: _this.url + _this.id, method: 'DELETE' })
-                        .then((resp) => {
-                            loader.hide()
-                            _this.load = false
-                            _this.count = 0
-                            _this.icon = resp.data.result ? 'success' : 'error'
-                            _this.message = resp.data.message
-                            _this.CLOSE()
+                axios({url: _this.url + _this.id, method: 'DELETE' })
+                    .then((resp) => {
+                        loader.hide()
+                        _this.load = false
+                        _this.count = 0
+                        _this.icon = resp.data.result ? 'success' : 'error'
+                        _this.message = resp.data.message
+                        _this.CLOSE()
+                        showToast(_this.icon, _this.message)
+                    })
+                    .catch((err) => {
+                        if(err.response.status === 400) {
+                            _this.icon = 'error'
+                            _this.message = 'No se puede eliminar el registro'
                             showToast(_this.icon, _this.message)
-                        }).catch((err) => {
-                            if(err.response.status === 400) {
-                                _this.icon = 'error'
-                                _this.message = 'No se puede eliminar el registro'
-                                showToast(_this.icon, _this.message)
-                            } else {
-                                showToast()
-                            }
-                            loader.hide()
-                            _this.load = false
-                            _this.count = 0
-                            _this.CLOSE()
-                        })
-                }, 1000)
+                        } else {
+                            showToast()
+                        }
+                        loader.hide()
+                        _this.load = false
+                        _this.count = 0
+                        _this.CLOSE()
+                })
             }
         }
     }

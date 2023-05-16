@@ -79,26 +79,25 @@ export default {
     mounted() {
         const loader = this.$showLoader()
         let _this = this
-        setTimeout(function () {
-            axios({url: '/kpis', method: 'GET'})
-                .then((resp) => {
-                    if (resp.data.result) {
-                        _this.users = resp.data.records.users
-                        _this.totals = resp.data.records.totals
-                        _this.departments = resp.data.records.departments
-                        _this.study_levels = resp.data.records.study_levels
-                        _this.antiquities = resp.data.records.antiquities
-                        _this.icon = "success"
-                    }
-                    _this.message = resp.data.message
-                    showToast(_this.icon, _this.message)
-                    loader.hide()
-                })
-                .catch((err) => {
-                    showToast()
-                    loader.hide()
-                })
-        }, 1000)
+
+        axios({url: '/kpis', method: 'GET'})
+            .then((resp) => {
+                if (resp.data.result) {
+                    _this.users = resp.data.records.users
+                    _this.totals = resp.data.records.totals
+                    _this.departments = resp.data.records.departments
+                    _this.study_levels = resp.data.records.study_levels
+                    _this.antiquities = resp.data.records.antiquities
+                    _this.icon = "success"
+                }
+                _this.message = resp.data.message
+                showToast(_this.icon, _this.message)
+                loader.hide()
+            })
+            .catch(() => {
+                showToast()
+                loader.hide()
+            })
     },
 };
 </script>

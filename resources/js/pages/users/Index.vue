@@ -112,23 +112,22 @@ export default {
             _this.get_delete = false
             _this.get_open = false
 
-            setTimeout(function() {
-                axios({url: 'users' , method: 'GET'})
-                    .then((resp) => {
-                        if(resp.data.records.length > 0) {
-                            _this.show = true
-                            _this.users = resp.data.records
-                        } else {
-                            _this.icon = 'warning'
-                            _this.message = 'No existen registros'
-                            showToast(_this.icon, _this.message)
-                        }
-                        loader.hide()
-                    }).catch(() => {
-                        showToast()
-                        loader.hide()
-                    })
-                }, 300)
+            axios({url: 'users' , method: 'GET'})
+                .then((resp) => {
+                    if(resp.data.records.length > 0) {
+                        _this.show = true
+                        _this.users = resp.data.records
+                    } else {
+                        _this.icon = 'warning'
+                        _this.message = 'No existen registros'
+                        showToast(_this.icon, _this.message)
+                    }
+                    loader.hide()
+                })
+                .catch(() => {
+                    showToast()
+                    loader.hide()
+                })
         },
         OPEN: function(method, id = null){
             this.method = method
