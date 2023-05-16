@@ -2,13 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import BaseLayout from "../layouts/guest/BaseLayout.vue";
 import AdminLayout from "../layouts/auth/AdminLayout.vue";
 import Database from "../pages/Database.vue";
+import SignUp from "../pages/Auth/SignUp.vue";
+import SignIn from "../pages/Auth/SignIn.vue";
 import Survey from "../pages/Survey.vue";
 import Dashboard from "../pages/Dashboard.vue";
 import Users from "../pages/users/Index.vue";
-import Billing from "../views/Billing.vue";
-import Profile from "../views/Profile.vue";
-import SignUp from "../pages/Auth/SignUp.vue";
-import SignIn from "../pages/Auth/SignIn.vue";
+import Departments from "../pages/departments/Index.vue";
 
 const routes = [
     {
@@ -49,17 +48,6 @@ const routes = [
         ]
     },
     {
-        path: '/users',
-        component: AdminLayout,
-        children: [
-            {
-                path: "",
-                name: "users",
-                component: Users,
-            },
-        ]
-    },
-    {
         path: '/admin',
         component: AdminLayout,
         children: [
@@ -71,15 +59,27 @@ const routes = [
         ]
     },
     {
-        path: "/billing",
-        name: "Billing",
-        component: Billing,
+        path: '/users',
+        component: AdminLayout,
+        children: [
+            {
+                path: "",
+                name: "users",
+                component: Users,
+            },
+        ]
     },
     {
-        path: "/profile",
-        name: "Profile",
-        component: Profile,
-    },
+        path: '/departments',
+        component: AdminLayout,
+        children: [
+            {
+                path: "",
+                name: "departments",
+                component: Departments,
+            },
+        ]
+    }
 ];
 
 const router = createRouter({

@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Response\ResponseController;
-use App\Models\User;
+use App\Models\Department;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends ResponseController
+class DepartmentController extends ResponseController
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +15,10 @@ class UserController extends ResponseController
     public function index()
     {
         try {
-            $users = User::on($this->database)->with('department')->get();
-            $this->records = $users;
+            $departments = Department::on($this->database)->get();
+            $this->records = $departments;
             $this->result = true;
-            $this->message = 'Usuarios consultados correctamente';
+            $this->message = 'Departamentos consultados correctamente';
             $this->statusCode = 200;
         } catch (Exception $exception) {
             $this->message = $exception->getMessage();
@@ -34,17 +33,13 @@ class UserController extends ResponseController
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'name'          => ['required'],
-            'email'         => ['required', 'email', 'unique:users,email'],
-            'password'      => ['required'],
-            'age'           => ['required', 'integer'],
-            'department_id' => ['required', 'integer', 'exists:departments,id'],
+            'name'  => ['required'],
+            'alias' => ['required'],
         ]);
         try {
-            $validate['password'] = Hash::make($request->password);
-            User::on($this->database)->create($validate);
+            Department::on($this->database)->create($validate);
             $this->result = true;
-            $this->message = 'Usuario creado correctamente';
+            $this->message = 'Departamento creado correctamente';
             $this->statusCode = 200;
         } catch (Exception $exception) {
             $this->message = $exception->getMessage();
@@ -59,10 +54,10 @@ class UserController extends ResponseController
     public function show(string $id)
     {
         try {
-            $user = User::on($this->database)->with('department')->find($id);
-            $this->records = $user;
+            $department = Department::on($this->database)->find($id);
+            $this->records = $department;
             $this->result = true;
-            $this->message = 'Usuario consultado correctamente';
+            $this->message = 'Departamento consultado correctamente';
             $this->statusCode = 200;
         } catch (Exception $exception) {
             $this->message = $exception->getMessage();
@@ -77,19 +72,14 @@ class UserController extends ResponseController
     public function update(Request $request, string $id)
     {
         $validate = $request->validate([
-            'name'          => ['required'],
-            'email'         => ['required', 'email', 'unique:users,email,'.$id],
-            'age'           => ['required', 'integer'],
-            'department_id' => ['required', 'integer', 'exists:departments,id'],
+            'name'  => ['required'],
+            'alias' => ['required'],
         ]);
         try {
-            if ($request->password) {
-                $validate['password'] = Hash::make($request->password);
-            }
-            $user = User::on($this->database)->find($id);
-            $user->update($validate);
+            $department = Department::on($this->database)->find($id);
+            $department->update($validate);
             $this->result = true;
-            $this->message = 'Usuario actualizado correctamente';
+            $this->message = 'Departamento actualizado correctamente';
             $this->statusCode = 200;
         } catch (Exception $exception) {
             $this->message = $exception->getMessage();
@@ -104,10 +94,10 @@ class UserController extends ResponseController
     public function destroy(string $id)
     {
         try {
-            $user = User::on($this->database)->find($id);
-            $user->delete();
+            $department = Department::on($this->database)->find($id);
+            $department->delete();
             $this->result = true;
-            $this->message = 'Usuario eliminado correctamente';
+            $this->message = 'Departamento eliminado correctamente';
             $this->statusCode = 200;
         } catch (Exception $exception) {
             $this->message = $exception->getMessage();
