@@ -147,7 +147,7 @@ export default {
                         if (resp.data.result) {
                             _this.icon = "success"
                             _this.message = resp.data.message
-                            _this.$router.push({ name: 'admin' })
+                            _this.$router.push('/admin')
                         } else {
                             _this.icon = 'error'
                             _this.message = resp.data.message.split("(")[0]

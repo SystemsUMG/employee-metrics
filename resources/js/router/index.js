@@ -21,7 +21,7 @@ const routes = [
         children: [
             {
                 path: '',
-                name: 'database',
+                name: 'Database',
                 component: Database
             }
         ]
@@ -42,7 +42,7 @@ const routes = [
         children: [
             {
                 path: '',
-                name: 'survey',
+                name: 'Survey',
                 component: Survey
             }
         ]
@@ -53,7 +53,7 @@ const routes = [
         children: [
             {
                 path: "",
-                name: "admin",
+                name: "Dashboard",
                 component: Dashboard,
             },
         ]
@@ -64,7 +64,7 @@ const routes = [
         children: [
             {
                 path: "",
-                name: "users",
+                name: "Usuarios",
                 component: Users,
             },
         ]
@@ -75,7 +75,7 @@ const routes = [
         children: [
             {
                 path: "",
-                name: "departments",
+                name: "Departamentos",
                 component: Departments,
             },
         ]
