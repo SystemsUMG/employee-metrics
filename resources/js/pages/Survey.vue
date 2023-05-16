@@ -4,16 +4,19 @@
             <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container">
                 <div class="row justify-content-center">
+                    <div class="d-flex justify-content-center z-index-sticky" v-if="show">
+                        <router-link to="/admin" class="btn btn-dark">Panel de Administración</router-link>
+                    </div>
                     <div class=" text-center mx-auto">
                         <h1 class="text-white mt-5">Ingreso de Datos</h1>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="py-4 container">
+        <div class="py-4 container-fluid">
             <div class="row mt-n12 justify-content-center">
-                <div class="col-md-8">
-                    <div class="card">
+                <div class="col-md-7 col-lg-6 col-xl-5">
+                    <div class="card py-4 mt-2">
                         <form @submit.prevent="SEND()">
                             <div class="card-header pb-0">
                                 <div class="d-flex align-items-center">
@@ -73,6 +76,18 @@
                         </form>
                     </div>
                 </div>
+                <div class="col-md-5 col-lg-6 col-xl-4">
+                    <div class="row mt-4 mt-lg-0">
+                        <div class="col-lg-12">
+                            <study-levels-donut-chart :study_levels="charts.study_levels"/>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-lg-12">
+                            <antiquities-bar-chart :antiquities="charts.antiquities"/>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
@@ -81,7 +96,9 @@
 
 <script>
 import ArgonButton from "../components/ArgonButton.vue";
-import AppFooter from "../layouts/guest/navbars/Footer.vue";
+import AppFooter from "../layouts/auth/navbars/Footer.vue";
+import StudyLevelsDonutChart from "../layouts/auth/charts/StudyLevelsDonutChart.vue";
+import AntiquitiesBarChart from "../layouts/auth/charts/AntiquitiesBarChart.vue";
 import { showToast } from "../helpers";
 
 export default {
@@ -99,16 +116,31 @@ export default {
             },
             errors: {},
             study_levels: [],
-            antiquities: []
+            antiquities: [],
+            charts: {
+                study_levels: {
+                    labels: [],
+                    values: [],
+                    percentages: []
+                },
+                antiquities: {
+                    labels: [],
+                    values: []
+                },
+            },
+            show: false
         };
     },
     components: {
         AppFooter,
-        ArgonButton
+        ArgonButton,
+        StudyLevelsDonutChart,
+        AntiquitiesBarChart
     },
     mounted() {
         const loader = this.$showLoader()
         let _this = this
+        _this.loadData()
         setTimeout(function() {
             axios({url: '/dynamic-values', method: 'GET' })
                 .then((resp) => {
@@ -147,11 +179,12 @@ export default {
                         if (resp.data.result) {
                             _this.icon = "success"
                             _this.message = resp.data.message
-                            _this.$router.push('/admin')
+                            _this.loadData()
                         } else {
                             _this.icon = 'error'
                             _this.message = resp.data.message.split("(")[0]
                         }
+                        _this.show = true
                         showToast(_this.icon, _this.message)
                         loader.hide()
                     })
@@ -164,6 +197,24 @@ export default {
                         } else {
                             showToast()
                         }
+                        loader.hide()
+                    })
+            }, 1000)
+        },
+        loadData() {
+            const loader = this.$showLoader()
+            let _this = this
+            setTimeout(function () {
+                axios({url: '/kpis', method: 'GET'})
+                    .then((resp) => {
+                        if (resp.data.result) {
+                            _this.charts.study_levels = resp.data.records.study_levels
+                            _this.charts.antiquities = resp.data.records.antiquities
+                        }
+                        loader.hide()
+                    })
+                    .catch((err) => {
+                        showToast()
                         loader.hide()
                     })
             }, 1000)

@@ -43,10 +43,10 @@
 <script>
 import KpisCard from "../layouts/auth/cards/KpisCard.vue";
 import DepartmentsLineChart from "../layouts/auth/charts/DepartmentsLineChart.vue";
-import KpisTable from "../layouts/auth/tables/KpisTable.vue";
-import {showToast} from "../helpers";
 import StudyLevelsDonutChart from "../layouts/auth/charts/StudyLevelsDonutChart.vue";
 import AntiquitiesBarChart from "../layouts/auth/charts/AntiquitiesBarChart.vue";
+import KpisTable from "../layouts/auth/tables/KpisTable.vue";
+import {showToast} from "../helpers";
 
 export default {
     name: "dashboard-default",
@@ -70,10 +70,10 @@ export default {
         };
     },
     components: {
-        AntiquitiesBarChart,
-        StudyLevelsDonutChart,
         KpisCard,
         DepartmentsLineChart,
+        StudyLevelsDonutChart,
+        AntiquitiesBarChart,
         KpisTable,
     },
     mounted() {

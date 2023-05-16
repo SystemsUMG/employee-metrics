@@ -36,7 +36,7 @@
     <app-footer />
 </template>
 <script>
-import AppFooter from "../layouts/guest/navbars/Footer.vue";
+import AppFooter from "../layouts/auth/navbars/Footer.vue";
 import ArgonButton from "../components/ArgonButton.vue";
 import logo from "../assets/img/logos/logo.png";
 
