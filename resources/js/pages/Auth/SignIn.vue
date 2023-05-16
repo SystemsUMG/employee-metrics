@@ -108,18 +108,18 @@ export default {
         }
     }),
     name: "sign-in",
-    mounted() {
-        if (!localStorage.getItem("database")) {
-            this.$router.push({ name: "database" });
-        }
-    },
     methods: {
-        async login() {
-            let forms = document.querySelector(".needs-validation");
-            forms.classList.add("was-validated");
-            await this.$store.dispatch("login", this.form);
-            this.$router.push({ name: "Survey" });
-        }
+        ...mapActions({
+            signIn:'auth/login'
+        }),
+        async login(){
+            await axios.get('/sanctum/csrf-cookie')
+            await axios.post('/login',this.form).then(({data})=>{
+                this.signIn()
+            }).catch(({response:{data}})=>{
+                alert(data.message)
+            })
+        },
     }
 };
 </script>

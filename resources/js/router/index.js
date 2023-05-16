@@ -1,28 +1,41 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "../store";
 import BaseLayout from "../layouts/guest/BaseLayout.vue";
 import AdminLayout from "../layouts/auth/AdminLayout.vue";
-import Database from "../pages/Database.vue";
-import Survey from "../pages/Survey.vue";
-import Dashboard from "../pages/Dashboard.vue";
+
+const Database = () => import("../pages/Database.vue");
+const SignIn = () => import("../pages/Auth/SignIn.vue");
+const SignUp = () => import("../pages/Auth/SignUp.vue");
+const Survey = () => import("../pages/Survey.vue");
+const Dashboard = () => import("../pages/Dashboard.vue");
+
+
+/*
 import Tables from "../views/Tables.vue";
 import Billing from "../views/Billing.vue";
 import Profile from "../views/Profile.vue";
-import SignUp from "../pages/Auth/SignUp.vue";
-import SignIn from "../pages/Auth/SignIn.vue";
+*/
 
 const routes = [
     {
         path: "/",
         name: "/",
         redirect: "/database",
+        meta: {
+            middleware: "guest"
+        }
     },
     {
-        path: '/database',
+        path: "/database",
         component: BaseLayout,
+        meta: {
+            middleware: "guest",
+            title: `Database`
+        },
         children: [
             {
-                path: '',
-                name: 'database',
+                path: "",
+                name: "database",
                 component: Database
             }
         ]
@@ -30,62 +43,103 @@ const routes = [
     {
         path: "/sign-in",
         name: "sign-in",
-        component: SignIn,
+        meta: {
+            middleware: "guest",
+            title: `Iniciar Sesión`
+        },
+        component: SignIn
     },
     {
         path: "/sign-up",
         name: "Sign-up",
-        component: SignUp,
+        meta: {
+            middleware: "guest",
+            title: `Sign Up`
+        },
+        component: SignUp
     },
     {
-        path: '/survey',
+        path: "/survey",
         component: BaseLayout,
+        meta: {
+            middleware: "auth",
+            title: `Survey`
+        },
         children: [
             {
-                path: '',
-                name: 'Survey',
+                path: "",
+                name: "Survey",
                 component: Survey
             }
         ]
     },
     {
-        path: '/tables',
+        path: "/admin",
         component: AdminLayout,
-        children: [
-            {
-                path: "",
-                name: "tables",
-                component: Tables,
-            },
-        ]
-    },
-    {
-        path: '/admin',
-        component: AdminLayout,
+        meta: {
+            middleware: "auth",
+            title: `Dashboard`
+        },
         children: [
             {
                 path: "",
                 name: "admin",
-                component: Dashboard,
-            },
+                component: Dashboard
+            }
         ]
-    },
-    {
-        path: "/billing",
-        name: "Billing",
-        component: Billing,
-    },
-    {
-        path: "/profile",
-        name: "Profile",
-        component: Profile,
-    },
+    }
+    /*
+     {
+         path: '/tables',
+         component: AdminLayout,
+         meta:{
+             middleware:"auth",
+         },
+         children: [
+             {
+                 path: "",
+                 name: "tables",
+                 component: Tables,
+             },
+         ]
+     },
+     {
+         path: "/billing",
+         name: "Billing",
+         component: Billing,
+     },
+     {
+         path: "/profile",
+         name: "Profile",
+         component: Profile,
+     },*/
 ];
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.APP_URL),
     routes,
-    linkActiveClass: "active",
+    linkActiveClass: "active"
+});
+
+router.beforeEach((to, from, next) => {
+    document.title = `${to.meta.title} - ${import.meta.env.VITE_APP_NAME}`;
+    if (!localStorage.getItem("database")) {
+        this.$router.push({ name: "database" });
+    } else {
+        if (to.meta.middleware == "guest") {
+            if (store.state.auth.authenticated) {
+                next({ name: "admin" });
+            } else {
+                next();
+            }
+        } else {
+            if (store.state.auth.authenticated) {
+                next();
+            } else {
+                next({ name: "sign-in" });
+            }
+        }
+    }
 });
 
 export default router;

@@ -20,8 +20,6 @@ axios.defaults.baseURL = '/api/'
 let database = localStorage.getItem('database') ? localStorage.getItem('database') : 'mysql' //Default
 axios.defaults.headers.common['Database'] = database
 
-store.dispatch("getUser");
-
 const appInstance = createApp(App);
 appInstance.use(store);
 appInstance.use(router);

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -47,8 +46,13 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::user()->tokens()->delete();
-        $response = new Response('Sesión cerrada');
+
+        $response = response()->json([
+            'message' => 'Sesión cerrada'
+        ], 200);
+
         $response->withCookie(cookie()->forget('employee_metrics_session'));
+
         return $response;
     }
 

@@ -1,26 +1,42 @@
+import axios from 'axios'
+import router from '../router'
+
 export default {
     namespaced: true,
-    state: {
-        user: null,
-        auth: false
+    state:{
+        authenticated:false,
+        user:{}
     },
-    mutations: {
-        SET_USER(state, user) {
-            state.user = user;
+    getters:{
+        authenticated(state){
+            return state.authenticated
+        },
+        user(state){
+            return state.user
         }
     },
-    actions: {
-        async login(credentials) {
-            await axios.get("/sanctum/csrf-cookie");
-            await axios.post("/login", credentials);
-            return dispatchEvent("getUser");
+    mutations:{
+        SET_AUTHENTICATED (state, value) {
+            state.authenticated = value
         },
-        getUser({ commit }) {
-            axios.get("/user").then((response) => {
-                commit('SET_USER', response.data);
-            }).catch(()=>{
-                commit('SET_USER', null);
+        SET_USER (state, value) {
+            state.user = value
+        }
+    },
+    actions:{
+        login({commit}){
+            return axios.get('/user').then(({data})=>{
+                commit('SET_USER',data)
+                commit('SET_AUTHENTICATED',true)
+                router.push({name:'Survey'})
+            }).catch(({response:{data}})=>{
+                commit('SET_USER',{})
+                commit('SET_AUTHENTICATED',false)
             })
+        },
+        logout({commit}){
+            commit('SET_USER',{})
+            commit('SET_AUTHENTICATED',false)
         }
     }
-};
+}

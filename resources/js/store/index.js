@@ -1,7 +1,9 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-plugin-persistedstate";
 import auth from "../modules/auth";
 
 export default createStore({
+    plugins: [createPersistedState()],
     state: {
         hideConfigButton: false,
         isPinned: true,
@@ -18,9 +20,6 @@ export default createStore({
         showFooter: true,
         showMain: true,
         layout: "default",
-
-        user: null,
-        auth: false
     },
     mutations: {
         toggleConfigurator(state) {
@@ -49,38 +48,15 @@ export default createStore({
                 state.isNavFixed = false;
             }
         },
-
-
-        SET_USER(state, user) {
-            state.user = user;
-            state.auth = Boolean(user);
-        }
     },
     actions: {
         toggleSidebarColor({ commit }, payload) {
             commit("sidebarType", payload);
         },
-
-        async logout({ dispatch }) {
-            await axios.post("/logout");
-            return dispatch("getUser");
-        },
-        async login({ dispatch }, credentials) {
-            await axios.get("/sanctum/csrf-cookie");
-            await axios.post("/login", credentials);
-            return dispatch("getUser");
-        },
-        getUser({ commit }) {
-            axios.get("/user").then((response) => {
-                commit("SET_USER", response.data);
-            }).catch(() => {
-                commit("SET_USER", null);
-            });
-        }
     },
     getters: {},
 
     modules: {
-        //auth,
+        auth,
     }
 });
