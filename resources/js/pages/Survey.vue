@@ -5,6 +5,10 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class=" text-center mx-auto">
+                        <template v-if="$store.state.auth">
+                            <span>{{ $store.state.user.name }}</span>
+                            <argon-button @click="logout" type="button" color="success" size="sm" class="ms-auto">Logout</argon-button>
+                        </template>
                         <h1 class="text-white mt-5">Ingreso de Datos</h1>
                     </div>
                 </div>
@@ -167,6 +171,10 @@ export default {
                         loader.hide()
                     })
             }, 1000)
+        },
+        async logout() {
+            await this.$store.dispatch("logout");
+            this.$router.push({ name: "sign-in" });
         }
     }
 };

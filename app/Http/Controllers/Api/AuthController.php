@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLoginRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -13,8 +14,9 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
 
-    public function register() {
-        
+    public function register()
+    {
+
     }
 
     /**
@@ -36,7 +38,6 @@ class AuthController extends Controller
         return response()->json([
             'user_id' => $user->id,
             'name' => $user->name,
-            'token' => $token->plainTextToken,
         ]);
     }
 
@@ -46,10 +47,9 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::user()->tokens()->delete();
-
-        return response()->json([
-            'message' => 'Sesión cerrada'
-        ], 200);
+        $response = new Response('Sesión cerrada');
+        $response->withCookie(cookie()->forget('employee_metrics_session'));
+        return $response;
     }
 
 }

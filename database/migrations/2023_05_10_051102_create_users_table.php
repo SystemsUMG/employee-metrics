@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('age');
-            $table->text('google2fa_secret')->nullable();
             $table->unsignedBigInteger('department_id');
             $table->timestamps();
 

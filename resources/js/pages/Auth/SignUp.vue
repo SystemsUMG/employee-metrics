@@ -27,11 +27,11 @@
                         </div>
                         <div class="card-body">
                             <form @submit.prevent="submitForm" class="needs-validation" novalidate>
-                                <argon-input type="text" placeholder="Nombre" aria-label="Name" required />
-                                <argon-input type="email" placeholder="Correo Electrónico" aria-label="Email" />
-                                <argon-input type="password" placeholder="Contraseña" aria-label="Password" />
+                                <argon-input type="text" placeholder="Nombre" aria-label="Name" is-required/>
+                                <argon-input type="email" placeholder="Correo Electrónico" aria-label="Email" is-required/>
+                                <argon-input type="password" placeholder="Contraseña" aria-label="Password" is-required/>
                                 <argon-input type="confirm_password" placeholder="Confirmar contraseña"
-                                             aria-label="Confirm Password" />
+                                             aria-label="Confirm Password" is-required/>
                                 <div class="text-center">
                                     <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2">
                                         Registrarse
@@ -61,11 +61,19 @@ import ArgonButton from "../../components/ArgonButton.vue";
 const body = document.getElementsByTagName("body")[0];
 
 export default {
+    components: {
+        Navbar,
+        AppFooter,
+        ArgonInput,
+        ArgonCheckbox,
+        ArgonButton
+    },
     data() {
         return {
             name: "",
             email: "",
-            password: ""
+            password: "",
+            confirm_password: "",
         };
     },
     mounted() {
@@ -79,12 +87,5 @@ export default {
             forms.classList.add("was-validated");
         }
     },
-    components: {
-        Navbar,
-        AppFooter,
-        ArgonInput,
-        ArgonCheckbox,
-        ArgonButton
-    }
 };
 </script>

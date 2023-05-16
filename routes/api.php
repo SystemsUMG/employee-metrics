@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\KpiController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,8 +21,13 @@ Route::name('api.')->middleware('guest')->group(function () {
         Route::post('login', 'login');
         Route::post('register', 'register');
     });
-    Route::get('dynamic-values', [KpiController::class, 'dynamicValues']);
 });
 
-
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('dynamic-values', [KpiController::class, 'dynamicValues']);
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+});
 Route::apiResource('kpis', KpiController::class);

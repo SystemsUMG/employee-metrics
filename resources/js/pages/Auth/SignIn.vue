@@ -22,14 +22,16 @@
                                     <p class="mb-0"> Ingrese su correo electrónico y contraseña para iniciar sesión</p>
                                 </div>
                                 <div class="card-body">
-                                    <form role="form">
+                                    <form role="form" @submit.prevent="login" class="needs-validation" novalidate>
                                         <div class="mb-3">
-                                            <argon-input type="email" placeholder="Correo electrónico" name="email"
-                                                         size="lg" />
+                                            <argon-input v-model="form.email" type="email"
+                                                         placeholder="Correo Electrónico"
+                                                         is-required />
                                         </div>
                                         <div class="mb-3">
-                                            <argon-input type="password" placeholder="Contraseña" name="password"
-                                                         size="lg" />
+                                            <argon-input v-model="form.password" type="password"
+                                                         placeholder="Contraseña"
+                                                         is-required />
                                         </div>
                                         <argon-switch id="rememberMe">Recuerdame</argon-switch>
 
@@ -77,6 +79,7 @@
                     </div>
                 </div>
             </div>
+            <button @click="logout">logout</button>
         </section>
     </main>
 </template>
@@ -86,20 +89,36 @@ import Navbar from "../../layouts/guest/navbars/Navbar.vue";
 import ArgonInput from "../../components/ArgonInput.vue";
 import ArgonSwitch from "../../components/ArgonSwitch.vue";
 import ArgonButton from "../../components/ArgonButton.vue";
+import { mapActions } from "vuex";
 
 const body = document.getElementsByTagName("body")[0];
 
 export default {
-    name: "sign-in",
     components: {
         Navbar,
         ArgonInput,
         ArgonSwitch,
         ArgonButton
     },
+    data: () => ({
+        user: {},
+        form: {
+            email: "",
+            password: ""
+        }
+    }),
+    name: "sign-in",
     mounted() {
         if (!localStorage.getItem("database")) {
             this.$router.push({ name: "database" });
+        }
+    },
+    methods: {
+        async login() {
+            let forms = document.querySelector(".needs-validation");
+            forms.classList.add("was-validated");
+            await this.$store.dispatch("login", this.form);
+            this.$router.push({ name: "Survey" });
         }
     }
 };
