@@ -47,7 +47,7 @@
                                         </div>
                                     </td>
                                     <td class="align-middle text-center">
-                                        <p class="text-xs mb-0">{{ user.updated_at }}</p>
+                                        <p class="text-xs mb-0">{{ user.date }}</p>
                                     </td>
                                     <td class="align-middle">
                                         <a  class="text-success font-weight-bold text-xs cursor-pointer"  @click="OPEN('PUT', user.id)">Editar</a>

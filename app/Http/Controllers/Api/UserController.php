@@ -16,7 +16,13 @@ class UserController extends ResponseController
     public function index()
     {
         try {
-            $users = User::on($this->database)->with('department')->get();
+            $users = User::on($this->database)
+                ->with('department')
+                ->get()
+                ->map(function($user){
+                    $user->date = $user->updated_at->format('d/m/Y');
+                    return $user;
+                });
             $this->records = $users;
             $this->result = true;
             $this->message = 'Usuarios consultados correctamente';
