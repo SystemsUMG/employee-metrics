@@ -74,6 +74,66 @@ class KpiController extends ResponseController
     }
 
     /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        try {
+            $value = $id; //TODO: set user from auth
+
+            $user = User::on($this->database)
+                ->select('id', 'age')
+                ->where('id', $value)
+                ->with(['kpis' => function ($query) {
+                    $query->select('value', 'kpi_type_id', 'user_id')
+                        ->with(['kpiType' => function ($query) {
+                            $query->select('id', 'alias');
+                        }]);
+                }])
+                ->first();
+            $user->kpis->map(function($kpi){
+                $kpi->type = $kpi->kpiType->alias; //Retornar unicamente alias y value
+                unset($kpi->id);
+                unset($kpi->user_id);
+                unset($kpi->kpi_type_id);
+                unset($kpi->kpiType);
+                return $kpi;
+            });
+
+            $this->records = $user;
+            $this->result = true;
+            $this->message = 'Registros consultados correctamente';
+            $this->statusCode = 200;
+        } catch (Exception $exception) {
+            $this->message = $exception->getMessage();
+        } finally {
+            return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
+        }
+    }
+
+    /**
+     * Display a listing of kpis per user.
+     */
+    public function partialKpis()
+    {
+        try {
+            $records = [
+                'study_levels' => $this->studyLevels(),
+                'antiquities'  => $this->antiquities(),
+            ];
+
+            $this->records = $records;
+            $this->result = true;
+            $this->message = 'Registros consultados exitosamente';
+            $this->statusCode = 200;
+        } catch (Exception $exception) {
+            $this->message = $exception->getMessage();
+        } finally {
+            return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
+        }
+    }
+
+    /**
      * Return a listing of kpis totals.
      */
     private function totals()

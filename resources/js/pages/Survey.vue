@@ -146,11 +146,34 @@ export default {
                 if (resp.data.result) {
                     _this.study_levels = resp.data.records.study_levels
                     _this.antiquities = resp.data.records.antiquities
-                    _this.icon = "success"
+
+                    axios({url: '/kpis/1', method: 'GET' })
+                        .then((resp) => {
+                            if (resp.data.result) {
+                                let user = resp.data.records
+                                _this.data.age = user.age
+
+                                user.kpis.forEach(kpi => {
+                                    const { type, value } = kpi;
+                                    if (type in _this.data) {
+                                        _this.data[type] = value;
+                                    }
+                                });
+
+                                _this.icon = "success"
+                            }
+                            _this.message = resp.data.message
+                            showToast(_this.icon, _this.message)
+                            loader.hide()
+                        })
+                        .catch(() => {
+                            showToast()
+                            loader.hide()
+                        })
+                } else {
+                    loader.hide()
+                    showToast(_this.icon, resp.data.message)
                 }
-                _this.message = resp.data.message
-                showToast(_this.icon, _this.message)
-                loader.hide()
             })
             .catch(() => {
                 showToast()
@@ -200,7 +223,7 @@ export default {
         loadData() {
             const loader = this.$showLoader()
             let _this = this
-            axios({url: '/kpis', method: 'GET'})
+            axios({url: '/kpis-partials', method: 'GET'})
                 .then((resp) => {
                     if (resp.data.result) {
                         _this.charts.study_levels = resp.data.records.study_levels

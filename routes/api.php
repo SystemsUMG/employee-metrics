@@ -27,5 +27,6 @@ Route::name('api.')->middleware('guest')->group(function () {
 
 
 Route::apiResource('kpis', KpiController::class);
+Route::get('kpis-partials',  [KpiController::class, 'partialKpis']);
 Route::apiResource('users', UserController::class);
 Route::apiResource('departments', DepartmentController::class);
