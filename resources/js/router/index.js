@@ -4,7 +4,7 @@ import AdminLayout from "../layouts/auth/AdminLayout.vue";
 import Database from "../pages/Database.vue";
 import Survey from "../pages/Survey.vue";
 import Dashboard from "../pages/Dashboard.vue";
-import Tables from "../views/Tables.vue";
+import Users from "../pages/users/Index.vue";
 import Billing from "../views/Billing.vue";
 import Profile from "../views/Profile.vue";
 import SignUp from "../pages/Auth/SignUp.vue";
@@ -49,13 +49,13 @@ const routes = [
         ]
     },
     {
-        path: '/tables',
+        path: '/users',
         component: AdminLayout,
         children: [
             {
                 path: "",
-                name: "tables",
-                component: Tables,
+                name: "users",
+                component: Users,
             },
         ]
     },

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\DepartmentController;
 use App\Http\Controllers\Api\KpiController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,3 +27,5 @@ Route::name('api.')->middleware('guest')->group(function () {
 
 
 Route::apiResource('kpis', KpiController::class);
+Route::apiResource('users', UserController::class);
+Route::apiResource('departments', DepartmentController::class);
