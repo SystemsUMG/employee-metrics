@@ -25,7 +25,7 @@ class AuthLoginRequest extends FormRequest
     #[ArrayShape(['email' => "string[]", 'password' => "string[]"])] public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'exists:users,email'],
             'password' => ['required'],
         ];
     }
