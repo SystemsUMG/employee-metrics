@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends ResponseController
 {
-    protected $phoneRule = ['phone.*' => 'El campo teléfono no es válido.'];
+    protected $phoneRule = ['phone.*' => 'El teléfono no es válido o ya ha sido registrado.'];
 
     /**
      * Display a listing of the resource.
@@ -47,7 +47,7 @@ class UserController extends ResponseController
             'email'         => ['required', 'email', 'unique:users,email'],
             'password'      => ['required'],
             'age'           => ['required', 'integer'],
-            'phone'         => ['required', 'min:12', 'max:12'],
+            'phone'         => ['required', 'min:12', 'max:12', 'unique:users,phone'],
             'department_id' => ['required', 'integer', 'exists:departments,id'],
         ], $this->phoneRule);
         try {
@@ -91,7 +91,7 @@ class UserController extends ResponseController
             'name'          => ['required'],
             'email'         => ['required', 'email', 'unique:users,email,'.$id],
             'age'           => ['required', 'integer'],
-            'phone'         => ['required', 'min:12', 'max:12'],
+            'phone'         => ['required', 'min:12', 'max:12', 'unique:users,phone,'.$id],
             'department_id' => ['required', 'integer', 'exists:departments,id'],
         ], $this->phoneRule);
         try {
