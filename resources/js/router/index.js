@@ -134,7 +134,7 @@ router.beforeEach((to, from, next) => {
     } else {
         if (to.meta.middleware == "guest") {
             if (store.state.auth.authenticated) {
-                next({ name: "admin" });
+                next({ name: "Dashboard" });
             } else {
                 next();
             }
@@ -142,7 +142,7 @@ router.beforeEach((to, from, next) => {
             if (store.state.auth.authenticated) {
                 next();
             } else {
-                next({ name: "sign-in" });
+                next({ name: "Database" });
             }
         }
     }

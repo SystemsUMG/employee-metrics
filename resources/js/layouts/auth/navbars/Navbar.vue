@@ -63,7 +63,7 @@ export default {
                 }
             ).then(() => {
                 this.signOut();
-                this.$router.push({ name: "sign-in" });
+                this.$router.push({ name: "Database" });
             });
         }
     },

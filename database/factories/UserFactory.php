@@ -23,6 +23,7 @@ class UserFactory extends Factory
             'email'         => fake()->unique()->safeEmail(),
             'password'      => Hash::make('admin'),
             'age'           => fake()->numberBetween(18, 60),
+            'phone'           => fake()->phoneNumber(),
             'department_id' => fake()->numberBetween(1, 6),
         ];
     }

@@ -22,7 +22,8 @@
                                     <p class="mb-0"> Ingrese su correo electrónico y contraseña para iniciar sesión</p>
                                 </div>
                                 <div class="card-body">
-                                    <form role="form" @submit.prevent="showOtpModal" class="needs-validation" novalidate>
+                                    <form role="form" @submit.prevent="login" class="needs-validation"
+                                          novalidate>
                                         <div class="mb-3">
                                             <argon-input v-model="form.email" type="email"
                                                          placeholder="Correo Electrónico"
@@ -90,7 +91,7 @@ import ArgonSwitch from "../../components/ArgonSwitch.vue";
 import ArgonButton from "../../components/ArgonButton.vue";
 import { mapActions } from "vuex";
 import { showToast } from "../../helpers";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 const body = document.getElementsByTagName("body")[0];
 
@@ -106,33 +107,52 @@ export default {
         form: {
             email: "",
             password: ""
-        }
+        },
+        phone: "",
+        verification_code: ""
     }),
     name: "sign-in",
     methods: {
         ...mapActions({
             signIn: "auth/login"
         }),
-        async login() {
-            await axios.get("/sanctum/csrf-cookie");
-            await axios.post("/login", this.form).then(({ data }) => {
-                this.showOtpModal();
+        login() {
+            let _this = this;
+            axios.post("/register", _this.form).then(({ data }) => {
+                _this.phone = data.phone;
+                _this.showOtpModal();
             }).catch(({ response: { data } }) => {
                 showToast("warning", data.message);
             });
         },
         showOtpModal() {
+            let _this = this;
             Swal.fire({
-                title: 'Ingrese el código OTP',
-                input: 'text',
+                title: "Ingrese el código OTP",
+                input: "text",
                 showCancelButton: true,
-                confirmButtonText: 'Enviar',
+                confirmButtonText: "Enviar",
                 showLoaderOnConfirm: true,
-                preConfirm: (otpCode) => {
-                    this.signIn();
+                preConfirm: (verification_code) => {
+                    _this.verification_code = verification_code;
+                    _this.verify();
                 },
                 allowOutsideClick: () => !Swal.isLoading()
-            })
+            });
+        },
+        async verify() {
+            let _this = this;
+            await axios.get("/sanctum/csrf-cookie");
+            await axios.post("/login", {
+                "phone": _this.phone,
+                "verification_code": _this.verification_code,
+                "credentials": _this.form
+            }).then(({ data }) => {
+                _this.signIn();
+                showToast("success", data);
+            }).catch(({ response: { data } }) => {
+                showToast("warning", data.message);
+            });
         }
     }
 };
