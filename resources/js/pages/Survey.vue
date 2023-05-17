@@ -21,7 +21,8 @@
                             <div class="card-header pb-0">
                                 <div class="d-flex align-items-center">
                                     <p class="mb-0">Por favor complete la información solicitada</p>
-                                    <argon-button type="submit" color="success" size="sm" class="ms-auto">Enviar</argon-button>
+                                    <argon-button type="submit" color="success" size="sm" class="ms-auto">Enviar
+                                    </argon-button>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -30,45 +31,65 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="salary" class="form-control-label">Ingrese su Salario Actual</label>
-                                            <input id="salary" class="form-control" type="number" v-model="data.salary" :class="errors.salary ? 'is-invalid' : ''">
-                                            <small class="invalid-feedback">{{ errors.salary ? errors.salary[0] : '' }}</small>
+                                            <label for="salary" class="form-control-label">Ingrese su Salario
+                                                Actual</label>
+                                            <input id="salary" class="form-control" type="number" v-model="data.salary"
+                                                   :class="errors.salary ? 'is-invalid' : ''">
+                                            <small class="invalid-feedback">{{ errors.salary ? errors.salary[0] : ""
+                                                }}</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="study_level" class="form-control-label">Seleccione su Nivel de Estudios</label>
-                                            <select  id="study_level" class="form-select" v-model="data.study_level" :class="errors.study_level ? 'is-invalid' : ''">
+                                            <label for="study_level" class="form-control-label">Seleccione su Nivel de
+                                                Estudios</label>
+                                            <select id="study_level" class="form-select" v-model="data.study_level"
+                                                    :class="errors.study_level ? 'is-invalid' : ''">
                                                 <option value="" disabled hidden>Seleccione una opción</option>
-                                                <option v-for="[key, value] in Object.entries(study_levels)" :value="key" :key="key">{{ value }}</option>
+                                                <option v-for="[key, value] in Object.entries(study_levels)"
+                                                        :value="key" :key="key">{{ value }}
+                                                </option>
                                             </select>
-                                            <small class="invalid-feedback">{{ errors.study_level ? errors.study_level[0] : '' }}</small>
+                                            <small
+                                                class="invalid-feedback">{{ errors.study_level ? errors.study_level[0] : ""
+                                                }}</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="age" class="form-control-label">Ingrese su Edad</label>
-                                            <input id="age" class="form-control" type="number" v-model="data.age" :class="errors.age ? 'is-invalid' : ''">
-                                            <small class="invalid-feedback">{{ errors.age ? errors.age[0] : '' }}</small>
+                                            <input id="age" class="form-control" type="number" v-model="data.age"
+                                                   :class="errors.age ? 'is-invalid' : ''">
+                                            <small class="invalid-feedback">{{ errors.age ? errors.age[0] : ""
+                                                }}</small>
                                         </div>
                                     </div>
                                     <hr class="horizontal light" />
                                     <p class="text-uppercase text-sm">Información Laboral</p>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="antiquity" class="form-control-label">Años Laborando en la Empresa</label>
-                                            <select  id="antiquity" class="form-select" v-model="data.antiquity" :class="errors.antiquity ? 'is-invalid' : ''">
+                                            <label for="antiquity" class="form-control-label">Años Laborando en la
+                                                Empresa</label>
+                                            <select id="antiquity" class="form-select" v-model="data.antiquity"
+                                                    :class="errors.antiquity ? 'is-invalid' : ''">
                                                 <option value="" disabled hidden>Seleccione una opción</option>
-                                                <option v-for="[key, value] in Object.entries(antiquities)" :value="key" :key="key">{{ value }}</option>
+                                                <option v-for="[key, value] in Object.entries(antiquities)" :value="key"
+                                                        :key="key">{{ value }}
+                                                </option>
                                             </select>
-                                            <small class="invalid-feedback">{{ errors.antiquity ? errors.antiquity[0] : '' }}</small>
+                                            <small
+                                                class="invalid-feedback">{{ errors.antiquity ? errors.antiquity[0] : ""
+                                                }}</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label for="absences" class="form-control-label">Promedio de Faltas al Mes</label>
-                                            <input id="absences" class="form-control" type="number" v-model="data.absences" :class="errors.absences ? 'is-invalid' : ''">
-                                            <small class="invalid-feedback">{{ errors.absences ? errors.absences[0] : '' }}</small>
+                                            <label for="absences" class="form-control-label">Promedio de Faltas al
+                                                Mes</label>
+                                            <input id="absences" class="form-control" type="number"
+                                                   v-model="data.absences" :class="errors.absences ? 'is-invalid' : ''">
+                                            <small class="invalid-feedback">{{ errors.absences ? errors.absences[0] : ""
+                                                }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -105,14 +126,14 @@ export default {
     name: "Survey",
     data() {
         return {
-            icon: '',
-            message: '',
+            icon: "",
+            message: "",
             data: {
-                salary: '',
-                study_level: '',
-                antiquity: '',
-                absences: '',
-                age: '',
+                salary: "",
+                study_level: "",
+                antiquity: "",
+                absences: "",
+                age: ""
             },
             errors: {},
             study_levels: [],
@@ -180,16 +201,16 @@ export default {
                 loader.hide()
             })
     },
-    methods:{
-        SEND: function(){
-            const loader = this.$showLoader()
-            let _this = this
+    methods: {
+        SEND: function() {
+            const loader = this.$showLoader();
+            let _this = this;
 
-            let form = new FormData()
+            let form = new FormData();
             for (const key of Object.keys(this.data)) {
-                const item = this.data[key]
-                if(item != null){
-                    form.append(key, item)
+                const item = this.data[key];
+                if (item != null) {
+                    form.append(key, item);
                 }
             }
 

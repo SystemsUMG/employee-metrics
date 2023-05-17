@@ -9,13 +9,13 @@
                             :value="total.value"
                             :iconClass="total.iconClass"
                             :iconBackground="total.iconBackground"
-                            directionReverse/>
+                            directionReverse />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card z-index-2">
-                            <departments-line-chart :departments="departments"/>
+                            <departments-line-chart :departments="departments" />
                         </div>
                     </div>
                 </div>
@@ -23,19 +23,19 @@
             <div class="col-lg-5">
                 <div class="row  mt-4 mt-lg-0">
                     <div class="col-lg-12">
-                        <study-levels-donut-chart :study_levels="study_levels"/>
+                        <study-levels-donut-chart :study_levels="study_levels" />
                     </div>
                 </div>
                 <div class="row mt-4">
                     <div class="col-lg-12">
-                        <antiquities-bar-chart :antiquities="antiquities"/>
+                        <antiquities-bar-chart :antiquities="antiquities" />
                     </div>
                 </div>
             </div>
         </div>
         <div class="row mt-4">
             <div class="col-lg-12">
-                <kpis-table :users="users"/>
+                <kpis-table :users="users" />
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@ export default {
             antiquities: {
                 labels: [],
                 values: []
-            },
+            }
         };
     },
     components: {

@@ -22,14 +22,17 @@
                                     <p class="mb-0"> Ingrese su correo electrónico y contraseña para iniciar sesión</p>
                                 </div>
                                 <div class="card-body">
-                                    <form role="form">
+                                    <form role="form" @submit.prevent="login" class="needs-validation"
+                                          novalidate>
                                         <div class="mb-3">
-                                            <argon-input type="email" placeholder="Correo electrónico" name="email"
-                                                         size="lg" />
+                                            <argon-input v-model="form.email" type="email"
+                                                         placeholder="Correo Electrónico"
+                                                         is-required />
                                         </div>
                                         <div class="mb-3">
-                                            <argon-input type="password" placeholder="Contraseña" name="password"
-                                                         size="lg" />
+                                            <argon-input v-model="form.password" type="password"
+                                                         placeholder="Contraseña"
+                                                         is-required />
                                         </div>
                                         <argon-switch id="rememberMe">Recuerdame</argon-switch>
 
@@ -86,20 +89,70 @@ import Navbar from "../../layouts/guest/navbars/Navbar.vue";
 import ArgonInput from "../../components/ArgonInput.vue";
 import ArgonSwitch from "../../components/ArgonSwitch.vue";
 import ArgonButton from "../../components/ArgonButton.vue";
+import { mapActions } from "vuex";
+import { showToast } from "../../helpers";
+import Swal from "sweetalert2";
 
 const body = document.getElementsByTagName("body")[0];
 
 export default {
-    name: "sign-in",
     components: {
         Navbar,
         ArgonInput,
         ArgonSwitch,
         ArgonButton
     },
-    mounted() {
-        if (!localStorage.getItem("database")) {
-            this.$router.push({ name: "database" });
+    data: () => ({
+        user: {},
+        form: {
+            email: "",
+            password: ""
+        },
+        phone: "",
+        verification_code: ""
+    }),
+    name: "sign-in",
+    methods: {
+        ...mapActions({
+            signIn: "auth/login"
+        }),
+        login() {
+            let _this = this;
+            axios.post("/register", _this.form).then(({ data }) => {
+                _this.phone = data.phone;
+                _this.showOtpModal();
+            }).catch(({ response: { data } }) => {
+                showToast("warning", data.message);
+            });
+        },
+        showOtpModal() {
+            let _this = this;
+            Swal.fire({
+                title: "Ingrese el código OTP",
+                input: "text",
+                showCancelButton: true,
+                confirmButtonText: "Enviar",
+                showLoaderOnConfirm: true,
+                preConfirm: (verification_code) => {
+                    _this.verification_code = verification_code;
+                    _this.verify();
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            });
+        },
+        async verify() {
+            let _this = this;
+            await axios.get("/sanctum/csrf-cookie");
+            await axios.post("/login", {
+                "phone": _this.phone,
+                "verification_code": _this.verification_code,
+                "credentials": _this.form
+            }).then(({ data }) => {
+                _this.signIn();
+                showToast("success", data);
+            }).catch(({ response: { data } }) => {
+                showToast("warning", data.message);
+            });
         }
     }
 };

@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import store from "../store";
+
 import BaseLayout from "../layouts/guest/BaseLayout.vue";
 import AdminLayout from "../layouts/auth/AdminLayout.vue";
 import Database from "../pages/Database.vue";
@@ -15,10 +17,17 @@ const routes = [
         path: "/",
         name: "/",
         redirect: "/database",
+        meta: {
+            middleware: "guest"
+        }
     },
     {
-        path: '/database',
+        path: "/database",
         component: BaseLayout,
+        meta: {
+            middleware: "guest",
+            title: `Database`
+        },
         children: [
             {
                 path: '',
@@ -30,16 +39,28 @@ const routes = [
     {
         path: "/sign-in",
         name: "sign-in",
-        component: SignIn,
+        meta: {
+            middleware: "guest",
+            title: `Iniciar Sesión`
+        },
+        component: SignIn
     },
     {
         path: "/sign-up",
         name: "Sign-up",
-        component: SignUp,
+        meta: {
+            middleware: "guest",
+            title: `Sign Up`
+        },
+        component: SignUp
     },
     {
-        path: '/survey',
+        path: "/survey",
         component: BaseLayout,
+        meta: {
+            middleware: "auth",
+            title: `Survey`
+        },
         children: [
             {
                 path: '',
@@ -51,6 +72,10 @@ const routes = [
     {
         path: '/admin',
         component: AdminLayout,
+        meta: {
+            middleware: "auth",
+            title: `Dashboard`
+        },
         children: [
             {
                 path: "",
@@ -62,6 +87,10 @@ const routes = [
     {
         path: '/users',
         component: AdminLayout,
+        meta: {
+            middleware: "auth",
+            title: `Usuarios`
+        },
         children: [
             {
                 path: "",
@@ -73,6 +102,10 @@ const routes = [
     {
         path: '/departments',
         component: AdminLayout,
+        meta: {
+            middleware: "auth",
+            title: `Departamentos`
+        },
         children: [
             {
                 path: "",
@@ -91,7 +124,28 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(import.meta.env.APP_URL),
     routes,
-    linkActiveClass: "active",
+    linkActiveClass: "active"
+});
+
+router.beforeEach((to, from, next) => {
+    document.title = `${to.meta.title} - ${import.meta.env.VITE_APP_NAME}`;
+    if (!localStorage.getItem("database")) {
+        this.$router.push({ name: "database" });
+    } else {
+        if (to.meta.middleware == "guest") {
+            if (store.state.auth.authenticated) {
+                next({ name: "Dashboard" });
+            } else {
+                next();
+            }
+        } else {
+            if (store.state.auth.authenticated) {
+                next();
+            } else {
+                next({ name: "Database" });
+            }
+        }
+    }
 });
 
 export default router;
