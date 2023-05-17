@@ -79,7 +79,6 @@
                     </div>
                 </div>
             </div>
-            <button @click="logout">logout</button>
         </section>
     </main>
 </template>
@@ -90,6 +89,7 @@ import ArgonInput from "../../components/ArgonInput.vue";
 import ArgonSwitch from "../../components/ArgonSwitch.vue";
 import ArgonButton from "../../components/ArgonButton.vue";
 import { mapActions } from "vuex";
+import { showToast } from "../../helpers";
 
 const body = document.getElementsByTagName("body")[0];
 
@@ -110,16 +110,16 @@ export default {
     name: "sign-in",
     methods: {
         ...mapActions({
-            signIn:'auth/login'
+            signIn: "auth/login"
         }),
-        async login(){
-            await axios.get('/sanctum/csrf-cookie')
-            await axios.post('/login',this.form).then(({data})=>{
-                this.signIn()
-            }).catch(({response:{data}})=>{
-                alert(data.message)
-            })
-        },
+        async login() {
+            await axios.get("/sanctum/csrf-cookie");
+            await axios.post("/login", this.form).then(({ data }) => {
+                this.signIn();
+            }).catch(({ response: { data } }) => {
+                showToast("warning", data.message);
+            });
+        }
     }
 };
 </script>

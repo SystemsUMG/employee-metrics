@@ -4,9 +4,12 @@
          id="navbarBlur"
          data-scroll="true">
         <div class="px-3 py-1 container-fluid">
-            <breadcrumbs :currentPage="currentRouteName" textWhite="text-white"/>
+            <breadcrumbs :currentPage="currentRouteName" textWhite="text-white" />
             <div class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4" id="navbar">
                 <ul class="navbar-nav justify-content-end ms-md-auto">
+                    <li class="nav-link font-weight-bold text-white">
+                        <span>{{ user.name }}</span>
+                    </li>
                     <li class="nav-item d-flex align-items-center">
                         <button @click="logout" class="btn">
                             <i class="fa fa-power-off me-sm-2"></i>
@@ -29,13 +32,14 @@
 </template>
 <script>
 import Breadcrumbs from "../../../components/Breadcrumbs.vue";
-import {mapMutations, mapActions} from "vuex";
+import { mapMutations, mapActions } from "vuex";
 
 export default {
     name: "navbar",
     data() {
         return {
-            showMenu: false
+            showMenu: false,
+            user: this.$store.state.auth.user
         };
     },
     props: ["minNav", "textWhite"],
@@ -47,13 +51,20 @@ export default {
             this.navbarMinimize();
         },
         ...mapActions({
-            signOut:"auth/logout"
+            signOut: "auth/logout"
         }),
-        async logout(){
-            await axios.post('/logout').then(({data})=>{
-                this.signOut()
-                this.$router.push({name:"sign-in"})
-            })
+        async logout() {
+            await axios.post("/logout", {},
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Requested-With": "XMLHttpRequest"
+                    }
+                }
+            ).then(() => {
+                this.signOut();
+                this.$router.push({ name: "sign-in" });
+            });
         }
     },
     components: {
