@@ -68,30 +68,35 @@ export default {
             count: 0,
             url: '',
             errors: {},
+            loader: this.$showLoader()
         }
     },
     computed: {
         OPEN: function() {
             let _this = this
-            if(_this.method === 'PUT') {
-                axios({url: '/departments/' + _this.id, method: 'GET' })
-                    .then((resp) => {
-                        if (resp.data.result) {
-                            _this.data = resp.data.records
-                        } else {
-                            showToast('error', resp.data.message)
-                            _this.CLOSE()
-                        }
-                    })
-                    .catch(() => {
-                        _this.CLOSE()
-                        showToast()
-                    })
-            }
+            _this.method === 'PUT' ? _this.loadDepartment() : _this.loader.hide()
             return _this.open
         },
     },
     methods:{
+        loadDepartment: function(){
+            let _this = this
+            axios({url: '/departments/' + _this.id, method: 'GET' })
+                .then((resp) => {
+                    if (resp.data.result) {
+                        _this.data = resp.data.records
+                    } else {
+                        showToast('error', resp.data.message)
+                        _this.CLOSE()
+                    }
+                    _this.loader.hide()
+                })
+                .catch(() => {
+                    _this.loader.hide()
+                    showToast()
+                    _this.CLOSE()
+                })
+        },
         CLOSE: function(){
             this.$emit('close')
         },

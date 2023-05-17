@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends ResponseController
 {
-    protected $phoneRule = ['phone.*' => 'El teléfono no es válido o ya ha sido registrado.'];
+    protected array $phoneRule = ['phone.*' => 'El teléfono no es válido o ya ha sido registrado.'];
 
     /**
      * Display a listing of the resource.
