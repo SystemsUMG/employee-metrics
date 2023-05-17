@@ -196,7 +196,7 @@ return [
         'password'=> 'contraseña',
         'currentPassword' => 'contraseña actual',
         'newPassword' => 'contraseña nueva',
-
+        'phone' => 'teléfono',
         'name' => 'nombre',
         'description' => 'descripción',
         'type' => 'tipo',

@@ -37,7 +37,20 @@ class Controller extends BaseController
         ];
     }
 
+    /**
+     * Return the specified resource.
+     */
     public function getKpiType ($alias) {
         return KpiType::on($this->database)->where('alias', $alias)->first();
+    }
+
+    /**
+     * Return formatted phone.
+     */
+    public function formatPhone ($phone) {
+        $phone = preg_replace('/[^0-9]/', '', $phone); //Numeros
+        $phone = ltrim($phone, '0'); //Eliminar 0
+        //Si tiene codigo solo agregar +
+        return str_starts_with($phone, '502') ? '+'.$phone : '+502'.$phone;
     }
 }

@@ -40,6 +40,13 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label for="phone" class="form-control-label">Teléfono</label>
+                                    <input id="phone" class="form-control" type="text" minlength="8" maxlength="14" v-model="data.phone" :class="errors.phone ? 'is-invalid' : ''">
+                                    <small class="invalid-feedback">{{ errors.phone ? errors.phone[0] : '' }}</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label for="department_id" class="form-control-label">Carrera</label>
                                     <select  id="department_id" class="form-select" v-model="data.department_id" :class="errors.department_id ? 'is-invalid' : ''">
                                         <option value="" disabled hidden>Seleccione una opción</option>
@@ -89,6 +96,7 @@ export default {
                 email: '',
                 password: '',
                 age: '',
+                phone: '',
                 department_id: ''
             },
             load: false,
