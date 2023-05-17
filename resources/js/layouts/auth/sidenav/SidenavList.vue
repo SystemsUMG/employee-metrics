@@ -4,7 +4,7 @@
             <li class="nav-item">
                 <sidenav-item url="/admin" :class="getRoute() === 'admin' ? 'active' : ''" navText="Dashboard">
                     <template v-slot:icon>
-                        <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                        <i class="fa fa-television text-primary text-sm opacity-10"></i>
                     </template>
                 </sidenav-item>
             </li>
@@ -19,6 +19,13 @@
                 <sidenav-item url="/departments" :class="getRoute() === 'departments' ? 'active' : ''" navText="Departamentos">
                     <template v-slot:icon>
                         <i class="fa fa-building text-success text-sm opacity-10"></i>
+                    </template>
+                </sidenav-item>
+            </li>
+            <li class="nav-item">
+                <sidenav-item url="/survey" navText="Encuesta">
+                    <template v-slot:icon>
+                        <i class="fa fa-list-alt text-info text-sm opacity-10 mt-0"></i>
                     </template>
                 </sidenav-item>
             </li>

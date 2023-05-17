@@ -1,12 +1,16 @@
 <template>
+    <div class="container top-0 position-sticky z-index-sticky">
+        <div class="row">
+            <div class="col-12">
+                <navbar :admin="show" isBlur="blur  border-radius-lg my-3 py-2 start-0 end-0 mx-4 shadow"/>
+            </div>
+        </div>
+    </div>
     <main class="main-content mt-0">
         <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg bg-cover-main">
             <span class="mask bg-gradient-dark opacity-6"></span>
             <div class="container">
                 <div class="row justify-content-center">
-                    <div class="d-flex justify-content-center z-index-sticky" v-if="show">
-                        <router-link to="/admin" class="btn btn-dark">Panel de Administración</router-link>
-                    </div>
                     <div class=" text-center mx-auto">
                         <h1 class="text-white mt-5">Ingreso de Datos</h1>
                     </div>
@@ -35,8 +39,7 @@
                                                 Actual</label>
                                             <input id="salary" class="form-control" type="number" v-model="data.salary"
                                                    :class="errors.salary ? 'is-invalid' : ''">
-                                            <small class="invalid-feedback">{{ errors.salary ? errors.salary[0] : ""
-                                                }}</small>
+                                            <small class="invalid-feedback">{{ errors.salary ? errors.salary[0] : "" }}</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -51,8 +54,7 @@
                                                 </option>
                                             </select>
                                             <small
-                                                class="invalid-feedback">{{ errors.study_level ? errors.study_level[0] : ""
-                                                }}</small>
+                                                class="invalid-feedback">{{ errors.study_level ? errors.study_level[0] : "" }}</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -60,8 +62,7 @@
                                             <label for="age" class="form-control-label">Ingrese su Edad</label>
                                             <input id="age" class="form-control" type="number" v-model="data.age"
                                                    :class="errors.age ? 'is-invalid' : ''">
-                                            <small class="invalid-feedback">{{ errors.age ? errors.age[0] : ""
-                                                }}</small>
+                                            <small class="invalid-feedback">{{ errors.age ? errors.age[0] : "" }}</small>
                                         </div>
                                     </div>
                                     <hr class="horizontal light" />
@@ -78,8 +79,7 @@
                                                 </option>
                                             </select>
                                             <small
-                                                class="invalid-feedback">{{ errors.antiquity ? errors.antiquity[0] : ""
-                                                }}</small>
+                                                class="invalid-feedback">{{ errors.antiquity ? errors.antiquity[0] : "" }}</small>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -88,8 +88,7 @@
                                                 Mes</label>
                                             <input id="absences" class="form-control" type="number"
                                                    v-model="data.absences" :class="errors.absences ? 'is-invalid' : ''">
-                                            <small class="invalid-feedback">{{ errors.absences ? errors.absences[0] : ""
-                                                }}</small>
+                                            <small class="invalid-feedback">{{ errors.absences ? errors.absences[0] : "" }}</small>
                                         </div>
                                     </div>
                                 </div>
@@ -117,6 +116,7 @@
 
 <script>
 import ArgonButton from "../components/ArgonButton.vue";
+import Navbar from "../layouts/guest/navbars/Navbar.vue";
 import AppFooter from "../layouts/auth/navbars/Footer.vue";
 import StudyLevelsDonutChart from "../layouts/auth/charts/StudyLevelsDonutChart.vue";
 import AntiquitiesBarChart from "../layouts/auth/charts/AntiquitiesBarChart.vue";
@@ -149,10 +149,11 @@ export default {
                     values: []
                 },
             },
-            show: false
+            show: true
         };
     },
     components: {
+        Navbar,
         AppFooter,
         ArgonButton,
         StudyLevelsDonutChart,

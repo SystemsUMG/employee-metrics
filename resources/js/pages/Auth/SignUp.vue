@@ -78,7 +78,7 @@ export default {
     },
     mounted() {
         if (!localStorage.getItem("database")) {
-            this.$router.push({ name: "database" });
+            this.$router.push({ name: "Database" });
         }
     },
     methods: {

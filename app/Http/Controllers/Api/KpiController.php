@@ -49,7 +49,7 @@ class KpiController extends ResponseController
             'age'         => ['required', 'string'],
         ]);
         try {
-            $user = 1; //TODO: set user from auth
+            $user = auth()->user()->id;
             foreach ($validate as $key => $value) {
                 $kpiType = $this->getKpiType($key);
                 //Kpi de edad en tabla usuarios
@@ -79,11 +79,10 @@ class KpiController extends ResponseController
     public function show(string $id)
     {
         try {
-            $value = $id; //TODO: set user from auth
-
+            $id = auth()->user()->id;
             $user = User::on($this->database)
                 ->select('id', 'age')
-                ->where('id', $value)
+                ->where('id', $id)
                 ->with(['kpis' => function ($query) {
                     $query->select('value', 'kpi_type_id', 'user_id')
                         ->with(['kpiType' => function ($query) {
