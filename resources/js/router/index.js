@@ -30,8 +30,8 @@ const routes = [
         },
         children: [
             {
-                path: '',
-                name: 'Database',
+                path: "",
+                name: "Database",
                 component: Database
             }
         ]
@@ -63,14 +63,14 @@ const routes = [
         },
         children: [
             {
-                path: '',
-                name: 'Survey',
+                path: "",
+                name: "Survey",
                 component: Survey
             }
         ]
     },
     {
-        path: '/admin',
+        path: "/admin",
         component: AdminLayout,
         meta: {
             middleware: "auth",
@@ -80,12 +80,12 @@ const routes = [
             {
                 path: "",
                 name: "Dashboard",
-                component: Dashboard,
-            },
+                component: Dashboard
+            }
         ]
     },
     {
-        path: '/users',
+        path: "/users",
         component: AdminLayout,
         meta: {
             middleware: "auth",
@@ -95,12 +95,12 @@ const routes = [
             {
                 path: "",
                 name: "Usuarios",
-                component: Users,
-            },
+                component: Users
+            }
         ]
     },
     {
-        path: '/departments',
+        path: "/departments",
         component: AdminLayout,
         meta: {
             middleware: "auth",
@@ -110,8 +110,8 @@ const routes = [
             {
                 path: "",
                 name: "Departamentos",
-                component: Departments,
-            },
+                component: Departments
+            }
         ]
     },
     {
@@ -129,21 +129,17 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} - ${import.meta.env.VITE_APP_NAME}`;
-    if (!localStorage.getItem("database")) {
-        this.$router.push({ name: "database" });
-    } else {
-        if (to.meta.middleware == "guest") {
-            if (store.state.auth.authenticated) {
-                next({ name: "Dashboard" });
-            } else {
-                next();
-            }
+    if (to.meta.middleware == "guest") {
+        if (store.state.auth.authenticated) {
+            next({ name: "Dashboard" });
         } else {
-            if (store.state.auth.authenticated) {
-                next();
-            } else {
-                next({ name: "Database" });
-            }
+            next();
+        }
+    } else {
+        if (store.state.auth.authenticated) {
+            next();
+        } else {
+            next({ name: "Database" });
         }
     }
 });
