@@ -2,82 +2,100 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Response\ResponseController;
 use App\Http\Requests\AuthLoginRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 use Twilio\Rest\Client;
 
-
-class AuthController extends Controller
+class AuthController extends ResponseController
 {
+    public string|array|false $token;
+    public string|array|false $twilio_sid;
+    public string|array|false $twilio_verify_sid;
 
-    public function register(AuthLoginRequest $request)
+    public function __construct(Request $request)
+    {
+        parent::__construct($request);
+        $this->token             = getenv("TWILIO_AUTH_TOKEN");
+        $this->twilio_sid        = getenv("TWILIO_SID");
+        $this->twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
+    }
+
+    public function login(AuthLoginRequest $request)
     {
         $request->validated();
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        try {
+            $user = User::on($this->database)->where('email', $request->email)->firstOrFail();
+            if (!Hash::check($request->password, $user->password)) {
+                $this->statusCode = 401;
+                throw new Exception ('La contraseña es incorrecta.');
+            }
+            $twilio = new Client($this->twilio_sid, $this->token);
+            $twilio->verify->v2->services($this->twilio_verify_sid)
+                ->verifications
+                ->create($user->phone, "sms");
 
-        if (!Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => [trans('auth.failed')],
-            ]);
+            $records = ['phone' => $user->phone];
+
+            $this->records = $records;
+            $this->result = true;
+            $this->message = 'Se ha enviado el código de verificación';
+            $this->statusCode = 200;
+        } catch (Exception $exception) {
+            $this->message = $exception->getMessage();
+        } finally {
+            return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
         }
-
-        /* Get credentials from .env */
-        $token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio_sid = getenv("TWILIO_SID");
-        $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
-        $twilio = new Client($twilio_sid, $token);
-        $twilio->verify->v2->services($twilio_verify_sid)
-            ->verifications
-            ->create($user->phone, "sms");
-
-        return response()->json([
-            'phone' => $user->phone
-        ]);
     }
 
-    /**
-     * @param AuthLoginRequest $request
-     * @return JsonResponse
-     */
-    public function login(Request $request)
+    public function verify(Request $request)
     {
         $request->validate([
             'verification_code' => ['required', 'numeric'],
-            'phone' => ['required', 'string'],
+            'phone'             => ['required', 'string'],
         ]);
-        $status = 400;
-        $message = 'No se pudo verificar el número';
-        /* Get credentials from .env */
-        $token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio_sid = getenv("TWILIO_SID");
-        $twilio_verify_sid = getenv("TWILIO_VERIFY_SID");
-        $twilio = new Client($twilio_sid, $token);
-        $verification = $twilio->verify->v2->services($twilio_verify_sid)
-            ->verificationChecks
-            ->create(['Code' => $request->verification_code, 'to' => $request->phone]);
-        if ($verification->valid) {
-            tap(User::where('phone', $request->phone))->update(['isVerified' => true]);
-            $user = User::where('phone', $request->phone)->firstOrFail();
-            /* Authenticate user */
-            if (!auth()->attempt($request->credentials, false, $this->database)) {
-                throw ValidationException::withMessages([
-                    'email' => [trans('auth.failed')],
+        try {
+            $twilio = new Client($this->twilio_sid, $this->token);
+            $verification = $twilio->verify->v2->services($this->twilio_verify_sid)
+                ->verificationChecks
+                ->create([
+                    'Code' => $request->verification_code,
+                    'to'   => $request->phone
                 ]);
-            }
-            $user->createToken('auth-token');
-            $message = "Número verificado";
-            $status = 200;
-        }
 
-        return response()->json($message, $status);
+            if ($verification->valid) {
+                $credentials = [
+                    'email'    => $request->email,
+                    'password' => $request->password,
+                ];
+
+                $user = User::on($this->database)->where('phone', $request->phone)->firstOrFail();
+                $user->update(['isVerified' => true]);
+                $user->save();
+
+                if (!auth()->attempt($credentials, false, $this->database)) {
+                    throw new Exception ('La contraseña es incorrecta.');
+                }
+
+                $user->createToken('auth-token');
+                $this->result = true;
+                $this->message = 'Se ha verificado el número';
+            } else {
+                $this->message = 'El código ingresado es incorrecto.';
+            }
+            $this->statusCode = 200;
+        } catch (Exception $exception) {
+            $this->message = $exception->getMessage();
+        } finally {
+            return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
+        }
     }
 
     /**
@@ -86,7 +104,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         Auth::user()->tokens()->delete();
-        tap(Auth::user())->update(['isVerified' => false]);
+        Auth::user()->update(['isVerified' => false]);
         Cookie::queue(Cookie::forget('employee_metrics_session'));
         return response()->json([
             'message' => 'Sesión cerrada'

@@ -33,6 +33,13 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label for="phone" class="form-control-label">Teléfono</label>
+                                    <input id="phone" class="form-control" type="text" minlength="8" maxlength="14" v-model="data.phone" :class="errors.phone ? 'is-invalid' : ''">
+                                    <small class="invalid-feedback">{{ errors.phone ? errors.phone[0] : '' }}</small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label for="age" class="form-control-label">Edad</label>
                                     <input id="age" class="form-control" type="number" v-model="data.age" :class="errors.age ? 'is-invalid' : ''">
                                     <small class="invalid-feedback">{{ errors.age ? errors.age[0] : '' }}</small>
@@ -89,6 +96,7 @@ export default {
                 email: '',
                 password: '',
                 age: '',
+                phone: '',
                 department_id: ''
             },
             load: false,
@@ -96,29 +104,15 @@ export default {
             url: '',
             departments: [],
             errors: {},
+            loader: this.$showLoader()
         }
     },
     computed: {
         OPEN: function() {
             let _this = this
             _this.loadData('departments')
-            if(_this.method === 'PUT') {
-                axios({url: '/users/' + _this.id, method: 'GET' })
-                    .then((resp) => {
-                        if (resp.data.result) {
-                            _this.data = resp.data.records
-                        } else {
-                            showToast('error', resp.data.message)
-                            _this.CLOSE()
-                        }
-                    })
-                    .catch(() => {
-                        _this.CLOSE()
-                        showToast()
-                    })
-            }
             return _this.open
-        },
+        }
     },
     methods:{
         loadData(url = '') {
@@ -134,13 +128,35 @@ export default {
                             default:
                                 _this.departments = records
                         }
+                        _this.method === 'PUT' ? _this.loadUser() : _this.loader.hide()
                     } else {
+                        _this.loader.hide()
                         _this.icon = 'error'
                         _this.message = 'No existen ' + url + ' registrados'
                         showToast(_this.icon, _this.message)
                         _this.CLOSE()
                     }
-                }).catch(() => {
+                })
+                .catch(() => {
+                    _this.loader.hide()
+                    showToast()
+                    _this.CLOSE()
+                })
+        },
+        loadUser: function(){
+            let _this = this
+            axios({url: '/users/' + _this.id, method: 'GET' })
+                .then((resp) => {
+                    if (resp.data.result) {
+                        _this.data = resp.data.records
+                    } else {
+                        showToast('error', resp.data.message)
+                        _this.CLOSE()
+                    }
+                    _this.loader.hide()
+                })
+                .catch(() => {
+                    _this.loader.hide()
                     showToast()
                     _this.CLOSE()
                 })

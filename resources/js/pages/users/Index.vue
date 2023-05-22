@@ -21,6 +21,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nombre</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Correo</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Edad</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Teléfono</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Departamento</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actualizado</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Acciones</th>
@@ -40,6 +41,11 @@
                                     </td>
                                     <td class="align-middle text-center">
                                         <p class="text-xs mb-0">{{ user.age }}</p>
+                                    </td>
+                                    <td>
+                                        <div class="px-3">
+                                            <span class="text-secondary text-xs font-weight-bold">{{ user.phone }}</span>
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="px-3">

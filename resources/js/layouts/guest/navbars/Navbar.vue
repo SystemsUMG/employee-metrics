@@ -1,9 +1,6 @@
 <template>
-    <!-- Navbar -->
-    <nav
-        class="navbar navbar-expand-lg top-0 z-index-3 position-absolute mt-4"
-        :class="isBlur ? isBlur : 'shadow-none my-2 navbar-transparent w-100'"
-    >
+    <nav class="navbar navbar-expand-lg top-0 z-index-3 position-absolute mt-4"
+        :class="isBlur ? isBlur : 'shadow-none my-2 navbar-transparent w-100'">
         <div class="container">
             <img src="../../../assets/img/logos/isologo.png" style="width: 45px; padding: 0; margin: 0" alt="">
             <button
@@ -13,31 +10,24 @@
                 data-bs-target="#navigation"
                 aria-controls="navigation"
                 aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
-        <span class="mt-2 navbar-toggler-icon">
-          <span class="navbar-toggler-bar bar1"></span>
-          <span class="navbar-toggler-bar bar2"></span>
-          <span class="navbar-toggler-bar bar3"></span>
-        </span>
+                aria-label="Toggle navigation">
+                <span class="mt-2 navbar-toggler-icon">
+                    <span class="navbar-toggler-bar bar1"></span>
+                    <span class="navbar-toggler-bar bar2"></span>
+                    <span class="navbar-toggler-bar bar3"></span>
+                </span>
             </button>
             <div class="collapse navbar-collapse" id="navigation">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item">
-                        <router-link class="nav-link me-2 text-light" to="/sign-up">
-                            <i
-                                class="fas fa-user-circle opacity-6 me-1"
-                                aria-hidden="true"
-                            ></i>
-                            Registrarse
+                    <li class="nav-item" v-if="admin">
+                        <router-link class="nav-link me-2 text-light" to="/admin">
+                            <i class="ni ni-tv-2 opacity-6 me-1" aria-hidden="true"></i>
+                            Panel de Administración
                         </router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="login">
                         <router-link class="nav-link me-2 text-light" to="/sign-in">
-                            <i
-                                class="fas fa-key opacity-6 me-1"
-                                aria-hidden="true"
-                            ></i>
+                            <i class="fas fa-key opacity-6 me-1" aria-hidden="true"></i>
                             Iniciar Sesión
                         </router-link>
                     </li>
@@ -45,7 +35,6 @@
             </div>
         </div>
     </nav>
-    <!-- End Navbar -->
 </template>
 
 <script>
@@ -67,7 +56,10 @@ export default {
         darkMode: {
             type: Boolean,
             default: false
-        }
+        },
+        admin: false,
+        login: false,
+
     },
     computed: {
         darkModes() {

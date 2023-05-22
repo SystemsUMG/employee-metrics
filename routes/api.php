@@ -21,15 +21,15 @@ use Illuminate\Support\Facades\Route;
 Route::name('api.')->middleware('guest')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
-        Route::post('register', 'register');
+        Route::post('verify', 'verify');
     });
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('dynamic-values', [KpiController::class, 'dynamicValues']);
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::get('/user', function (Request $request) {
-        return $request->user();
+    Route::get('/user', function () {
+        return auth()->user();
     });
 });
 Route::apiResource('kpis', KpiController::class);

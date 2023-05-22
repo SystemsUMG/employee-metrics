@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends ResponseController
 {
+    protected array $phoneRule = ['phone.*' => 'El teléfono no es válido o ya ha sido registrado.'];
+
     /**
      * Display a listing of the resource.
      */
@@ -39,13 +41,15 @@ class UserController extends ResponseController
      */
     public function store(Request $request)
     {
+        $request->merge(['phone' => $this->formatPhone($request->phone)]);
         $validate = $request->validate([
             'name'          => ['required'],
             'email'         => ['required', 'email', 'unique:users,email'],
             'password'      => ['required'],
             'age'           => ['required', 'integer'],
+            'phone'         => ['required', 'min:12', 'max:12', 'unique:users,phone'],
             'department_id' => ['required', 'integer', 'exists:departments,id'],
-        ]);
+        ], $this->phoneRule);
         try {
             $validate['password'] = Hash::make($request->password);
             User::on($this->database)->create($validate);
@@ -65,7 +69,7 @@ class UserController extends ResponseController
     public function show(string $id)
     {
         try {
-            $user = User::on($this->database)->with('department')->find($id);
+            $user = User::on($this->database)->with('department')->findOrFail($id);
             $this->records = $user;
             $this->result = true;
             $this->message = 'Usuario consultado correctamente';
@@ -82,12 +86,14 @@ class UserController extends ResponseController
      */
     public function update(Request $request, string $id)
     {
+        $request->merge(['phone' => $this->formatPhone($request->phone)]);
         $validate = $request->validate([
             'name'          => ['required'],
             'email'         => ['required', 'email', 'unique:users,email,'.$id],
             'age'           => ['required', 'integer'],
+            'phone'         => ['required', 'min:12', 'max:12', 'unique:users,phone,'.$id],
             'department_id' => ['required', 'integer', 'exists:departments,id'],
-        ]);
+        ], $this->phoneRule);
         try {
             if ($request->password) {
                 $validate['password'] = Hash::make($request->password);
