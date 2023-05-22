@@ -205,7 +205,7 @@ return [
         'document.name' => 'nombre del documento',
         'user_id' => 'usuario',
         'document.review_group_id' => 'grupo de revisión',
-
+        'verification_code' => 'código de verificación',
         'study_level' => 'nivel de estudios ',
         'antiquity' => 'antigüedad',
         'absences' => 'ausencias',
