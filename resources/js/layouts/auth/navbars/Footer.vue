@@ -4,8 +4,7 @@
             <div class="row align-items-center justify-content-lg-between">
                 <div class="mb-4 col mb-lg-0">
                     <div class="text-sm text-center copyright text-muted">
-                        © {{ new Date().getFullYear() }}, hecho con
-                        <i class="fa fa-heart"></i> por
+                        © {{ new Date().getFullYear() }}, hecho por
                         <span class="font-weight-bold">
                             <a href="https://github.com/cris-gf" target="_blank">cris-gf</a>
                             &
