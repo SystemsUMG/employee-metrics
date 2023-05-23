@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Twilio\Rest\Client;
 
@@ -32,11 +33,14 @@ class AuthController extends ResponseController
         $request->validated();
 
         try {
-            $user = User::on($this->database)->where('email', $request->email)->firstOrFail();
-            if (!Hash::check($request->password, $user->password)) {
-                $this->statusCode = 401;
-                throw new Exception ('La contraseña es incorrecta.');
+            $user = User::on($this->database)->where('email', $request->email)->first();
+
+            if (!$user) {
+                throw new Exception ('El correo electrónico no está registrado.', 401);
+            } else if (!Hash::check($request->password, $user->password)) {
+                throw new Exception ('La contraseña es incorrecta.', 401);
             }
+
             $twilio = new Client($this->twilio_sid, $this->token);
             $twilio->verify->v2->services($this->twilio_verify_sid)
                 ->verifications
@@ -49,6 +53,7 @@ class AuthController extends ResponseController
             $this->message = 'Se ha enviado el código de verificación';
             $this->statusCode = 200;
         } catch (Exception $exception) {
+            $this->statusCode = $exception->getCode() ?: $this->statusCode;
             $this->message = $exception->getMessage();
         } finally {
             return $this->jsonResponse($this->result, $this->records, $this->message, $this->statusCode);
@@ -80,7 +85,7 @@ class AuthController extends ResponseController
                 $user->update(['isVerified' => true]);
                 $user->save();
 
-                if (!auth()->attempt($credentials, false, $this->database)) {
+                if (!auth()->attempt($credentials)) {
                     throw new Exception ('La contraseña es incorrecta.');
                 }
 
@@ -106,9 +111,7 @@ class AuthController extends ResponseController
         Auth::user()->tokens()->delete();
         Auth::user()->update(['isVerified' => false]);
         Cookie::queue(Cookie::forget('employee_metrics_session'));
-        return response()->json([
-            'message' => 'Sesión cerrada'
-        ], 200);
+        return response()->json(['message' => 'Sesión cerrada']);
     }
 
 }
