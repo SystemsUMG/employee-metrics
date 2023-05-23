@@ -54,6 +54,7 @@ export default {
             signOut: "auth/logout"
         }),
         async logout() {
+            const loader = this.$showLoader()
             await axios.post("/logout", {},
                 {
                     headers: {
@@ -62,9 +63,12 @@ export default {
                     }
                 }
             ).then(() => {
+                loader.hide()
                 this.signOut();
                 this.$router.push({ name: "Database" });
-            });
+            }).catch(() => {
+                loader.hide()
+            })
         }
     },
     components: {

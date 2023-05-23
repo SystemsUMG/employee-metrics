@@ -124,9 +124,3 @@ export default {
     }
 };
 </script>
-<style>
-.bg-cover-sign-in {
-    background-image: url(../../assets/img/covers/login-1.jpg) !important;
-    background-size: cover;
-}
-</style>

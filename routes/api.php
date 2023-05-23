@@ -26,13 +26,13 @@ Route::name('api.')->middleware('guest')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('dynamic-values', [KpiController::class, 'dynamicValues']);
-    Route::post('logout', [AuthController::class, 'logout']);
     Route::get('/user', function () {
         return auth()->user();
     });
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::get('dynamic-values', [KpiController::class, 'dynamicValues']);
+    Route::apiResource('kpis', KpiController::class);
+    Route::get('kpis-partials',  [KpiController::class, 'partialKpis']);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('departments', DepartmentController::class);
 });
-Route::apiResource('kpis', KpiController::class);
-Route::get('kpis-partials',  [KpiController::class, 'partialKpis']);
-Route::apiResource('users', UserController::class);
-Route::apiResource('departments', DepartmentController::class);
