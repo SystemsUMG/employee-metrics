@@ -110,8 +110,6 @@ class AuthController extends ResponseController
     {
         Auth::user()->tokens()->delete();
         Auth::user()->update(['isVerified' => false]);
-        Cookie::queue(Cookie::forget('employee_metrics_session'));
         return response()->json(['message' => 'Sesión cerrada']);
     }
-
 }

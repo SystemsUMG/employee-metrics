@@ -111,6 +111,7 @@ export default {
                     }
                 }
 
+                axios.get("/sanctum/csrf-cookie");
                 axios.post("/login", form)
                     .then(({ data }) => {
                         if (data.result) {

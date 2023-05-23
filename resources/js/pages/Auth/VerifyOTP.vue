@@ -89,7 +89,6 @@ export default {
                 form.append('verification_code', _this.verification_code)
                 this.errors = []
 
-                await axios.get("/sanctum/csrf-cookie")
                 await axios.post("/verify", form)
                     .then(({ data }) => {
                         if (data.result) {
