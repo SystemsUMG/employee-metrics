@@ -9,7 +9,10 @@
                                 <h6>Tabla de Usuarios</h6>
                             </div>
                             <div class="col text-end">
-                                <argon-button type="button" @click="OPEN('POST')" color="primary" size="sm" class="ms-auto mb-3">Crear</argon-button>
+                                <argon-button type="button" @click="OPEN('POST')" color="primary" size="sm" class="ms-auto mb-3">
+                                    <i class="fas fa-plus-circle"></i>
+                                    Crear
+                                </argon-button>
                             </div>
                         </div>
                     </div>
@@ -56,9 +59,13 @@
                                         <p class="text-xs mb-0">{{ user.date }}</p>
                                     </td>
                                     <td class="align-middle">
-                                        <a  class="text-success font-weight-bold text-xs cursor-pointer"  @click="OPEN('PUT', user.id)">Editar</a>
+                                        <a  class="text-success font-weight-bold text-xs cursor-pointer"  @click="OPEN('PUT', user.id)">
+                                            <i class="fas fa-user-edit fa-2x text-secondary"></i>
+                                        </a>
                                         &nbsp
-                                        <a class="text-danger font-weight-bold text-xs cursor-pointer" @click="OPEN('DELETE', user.id)">Eliminar</a>
+                                        <a class="text-danger font-weight-bold text-xs cursor-pointer" @click="OPEN('DELETE', user.id)">
+                                            <i class="fas fa-user-times fa-2x text-danger"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 </tbody>

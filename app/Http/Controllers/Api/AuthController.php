@@ -41,10 +41,10 @@ class AuthController extends ResponseController
                 throw new Exception ('La contraseña es incorrecta.', 401);
             }
 
-            $twilio = new Client($this->twilio_sid, $this->token);
+            /*$twilio = new Client($this->twilio_sid, $this->token);
             $twilio->verify->v2->services($this->twilio_verify_sid)
                 ->verifications
-                ->create($user->phone, "sms");
+                ->create($user->phone, "sms");*/
 
             $records = ['phone' => $user->phone];
 
@@ -67,15 +67,15 @@ class AuthController extends ResponseController
             'phone'             => ['required', 'string'],
         ]);
         try {
-            $twilio = new Client($this->twilio_sid, $this->token);
+            /*$twilio = new Client($this->twilio_sid, $this->token);
             $verification = $twilio->verify->v2->services($this->twilio_verify_sid)
                 ->verificationChecks
                 ->create([
                     'Code' => $request->verification_code,
                     'to'   => $request->phone
-                ]);
+                ]);*/
 
-            if ($verification->valid) {
+            //if ($verification->valid) {
                 $credentials = [
                     'email'    => $request->email,
                     'password' => $request->password,
@@ -92,9 +92,9 @@ class AuthController extends ResponseController
                 $user->createToken('auth-token');
                 $this->result = true;
                 $this->message = 'Se ha verificado el número';
-            } else {
+            /*} else {
                 $this->message = 'El código ingresado es incorrecto.';
-            }
+            }*/
             $this->statusCode = 200;
         } catch (Exception $exception) {
             $this->message = $exception->getMessage();

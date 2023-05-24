@@ -8,6 +8,7 @@
             <div class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4" id="navbar">
                 <ul class="navbar-nav justify-content-end ms-md-auto">
                     <li class="nav-link font-weight-bold text-white">
+                        <i class="fas fa-user me-1"></i>
                         <span>{{ user.name }}</span>
                     </li>
                     <li class="nav-item d-flex align-items-center">

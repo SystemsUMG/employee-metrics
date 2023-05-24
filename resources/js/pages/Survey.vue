@@ -25,7 +25,9 @@
                             <div class="card-header pb-0">
                                 <div class="d-flex align-items-center">
                                     <p class="mb-0">Por favor complete la información solicitada</p>
-                                    <argon-button type="submit" color="success" size="sm" class="ms-auto">Enviar
+                                    <argon-button type="submit" color="success" size="sm" class="ms-auto">
+                                        <i class="fas fa-paper-plane"></i>
+                                        Enviar
                                     </argon-button>
                                 </div>
                             </div>
