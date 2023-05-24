@@ -47,7 +47,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="department_id" class="form-control-label">Carrera</label>
+                                    <label for="department_id" class="form-control-label">Departamento</label>
                                     <select  id="department_id" class="form-select" v-model="data.department_id" :class="errors.department_id ? 'is-invalid' : ''">
                                         <option value="" disabled hidden>Seleccione una opción</option>
                                         <option v-for="department in departments" :value="department.id" :key="department.id">{{ department.name }}</option>
